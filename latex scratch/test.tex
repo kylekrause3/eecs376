@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{amssymb,amsmath}
+\RequirePackage[boxed]{algorithm}
+\RequirePackage[noend]{algpseudocode}
 \begin{document}
 Hello!
 
@@ -7,5 +9,59 @@ Hello!
 e&=mc^2\\
 y&=mx+b
 \end{align}
+
+\begin{align*}
+e&=mc^2\\
+y&=mx+b
+\end{align*}
+
+\part{}
+\section{section}
+\subsection{subsection}
+\subsubsection{subsubsection}
+\paragraph{paragraph} paragraph text
+\subparagraph{subparagraph} subparagraph text
+\newline
+
+\hfill \break
+
+\begin{itemize}
+    \item item 1
+    \item item 2
+\end{itemize}
+
+\hfill \break
+
+\begin{enumerate}
+\item The first item
+\begin{enumerate}
+\item Nested item 1
+\item Nested item 2
+\end{enumerate}
+\item The second item
+\item The third etc \ldots
+\end{enumerate}
+
+\begin{minipage}{\linewidth}
+\begin{algorithm}[H]
+    \begin{algorithmic}[1]
+        \Require{a natural number $n$}
+        \Ensure{the $n$-th Fibonacci number}
+        \Function{\text{Fib}}{$n$}
+            \If{$n = 0$}
+                \State \Return $0$
+            \EndIf
+            \If{$n = 1$}
+                \State \Return $1$
+            \EndIf
+            \State \Return $\text{Fib}(n-1) + \text{Fib}(n-2)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{minipage}
+
+
+
+
 
 \end{document}

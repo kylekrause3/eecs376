@@ -1,11 +1,269 @@
 \documentclass{article}
 \usepackage{amssymb,amsmath}
+\RequirePackage[boxed]{algorithm}
+\RequirePackage{microtype}
+\RequirePackage{mathtools}
+\RequirePackage{amsthm}
+\RequirePackage{xspace}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref} % must load after hyperref
+\usepackage{fvextra} % To use Verbatim
+\RequirePackage[noend]{algpseudocode}
+\RequirePackage{tikz}
+
+\title{Homework 1}
+\author{Kyle Krause}
+\date{\today}
+
+
 \begin{document}
-Hello!
+\maketitle
 
-\begin{align}
-e&=mc^2\\
-y&=mx+c
-\end{align}
+\begin{enumerate}
 
+
+
+    \item \LaTeX \textbf{ Snippets}
+    \begin{enumerate}
+        \item \LaTeX \textbf{ for Dummies} \\
+        For (non-negative) functions $f(n)$ and $g(n)$, we say ``$f(n) = O(g(n))$'' if there exist positive constants $c, n_0$ such that $f(n) \leq c \cdot g(n)$ for all $n \geq n_0$. The key features here are:
+
+        \begin{itemize}
+            \item ``there exists a positive constant $c \dots f(n) \leq c \cdot g(n)$'': this says that $f(n)$ is \textit{upper bounded} by some constant multiple of $g(n)$. That is, $O$-notation ``hides,'' or ignores, constant factors. Note also that it captures only an \textit{upper bound}: $f(n)$ might actually be much smaller than $c \cdot g(n)$, or not. A big-$O$ bound by itself says nothing about which is the case.
+            \item ``there exists a positive constant $n_0 \dots$ for all $n \geq n_0$'': this says that the upper bound holds for all $n$ above some constant \textit{``threshold.''} However, it says nothing about the relationship between $f(n)$ and $g(n)$ below the threshold; it could be that $f(n)$ greatly exceeds (even a huge multiple of) $g(n)$ in that range. Moreover, the threshold $n_0$ can be \textit{any constant}---it could be one, or ten, or a billion, or a googolplex---and the notation hides its exact value.
+        \end{itemize}
+
+
+
+        \item \textbf{Fibonacci Numbers.} \\
+        The Fibonacci numbers may be defined by the recurrence relation
+        \[
+        F_n = F_{n-1} + F_{n-2}
+        \]
+        with base cases $F_0 = 0$ and $F_1 = 1$. We can compute the $n$-th Fibonacci number using the following recursive algorithm:
+
+        \begin{minipage}{\linewidth}
+        \begin{algorithm}[H]
+            \begin{algorithmic}[1]
+                \Require{a natural number $n$}
+                \Ensure{the $n$-th Fibonacci number}
+                \Function{\text{Fib}}{$n$}
+                    \If{$n = 0$}
+                        \State \Return $0$
+                    \EndIf
+                    \If{$n = 1$}
+                        \State \Return $1$
+                    \EndIf
+                    \State \Return $\text{Fib}(n-1) + \text{Fib}(n-2)$
+                \EndFunction
+            \end{algorithmic}
+        \end{algorithm}
+        \end{minipage}
+    \end{enumerate}
+
+    \textbf{Source Code:}
+    \begin{verbatim}
+\begin{enumerate}
+    \item \LaTeX \textbf{ for Dummies} \\
+    For (non-negative) functions $f(n)$ and $g(n)$, we say ``$f(n) = O(g(n))$'' if there exist positive constants $c, n_0$ such that $f(n) \leq c \cdot g(n)$ for all $n \geq n_0$. The key features here are:
+
+    \begin{itemize}
+        \item ``there exists a positive constant $c \dots f(n) \leq c \cdot g(n)$'': this says that $f(n)$ is \textit{upper bounded} by some constant multiple of $g(n)$. That is, $O$-notation ``hides,'' or ignores, constant factors. Note also that it captures only an \textit{upper bound}: $f(n)$ might actually be much smaller than $c \cdot g(n)$, or not. A big-$O$ bound by itself says nothing about which is the case.
+        \item ``there exists a positive constant $n_0 \dots$ for all $n \geq n_0$'': this says that the upper bound holds for all $n$ above some constant \textit{``threshold.''} However, it says nothing about the relationship between $f(n)$ and $g(n)$ below the threshold; it could be that $f(n)$ greatly exceeds (even a huge multiple of) $g(n)$ in that range. Moreover, the threshold $n_0$ can be \textit{any constant}---it could be one, or ten, or a billion, or a googolplex---and the notation hides its exact value.
+    \end{itemize}
+
+
+
+    \item \textbf{Fibonacci Numbers.} \\
+    The Fibonacci numbers may be defined by the recurrence relation
+    \[
+    F_n = F_{n-1} + F_{n-2}
+    \]
+    with base cases $F_0 = 0$ and $F_1 = 1$. We can compute the $n$-th Fibonacci number using the following recursive algorithm:
+
+    \begin{minipage}{\linewidth}
+    \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+            \Require{a natural number $n$}
+            \Ensure{the $n$-th Fibonacci number}
+            \Function{\text{Fib}}{$n$}
+                \If{$n = 0$}
+                    \State \Return $0$
+                \EndIf
+                \If{$n = 1$}
+                    \State \Return $1$
+                \EndIf
+                \State \Return $\text{Fib}(n-1) + \text{Fib}(n-2)$
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+    \end{minipage}
+\end{enumerate}
+    \end{verbatim}
+    \pagebreak
+
+
+    \item \textbf{Read the syllabus!}
+    \begin {enumerate}
+        \item Suppose you attend 9 out of 14 discussion sessions and submit both course evaluation receipts.
+        \begin{center}
+            \renewcommand{\arraystretch}{1.2}
+            \begin{tabular}{|l|c|}
+            \hline
+            \textbf{Component}         & \textbf{Weight (\%)} \\ \hline
+            Homework                   & $40$ \\ \hline
+            Exams                      & $59$ \\ \hline
+            Discussion Attendance      & $0$ \\ \hline
+            Course Evaluations         & $1$ \\ \hline
+            \textbf{Total}             & \textbf{100}       \\ \hline
+            \end{tabular}
+        \end{center}
+
+
+
+        \item Homework calculation: \\
+        With homework 12 submitted late, it's true score is $90 \times 95\% = 85.5\%$ \\
+        With scores of 100, 80, 90, 0, 95, 70, 85, 88, 92, 50, 94, and 85.5, we drop the two lowest scores of 0 and 70. \\
+        The average of the remaining scores is:\\
+        \begin{align*}
+            \frac{100 + 80 + 90 + 95 + 85 + 88 + 92 + 50 + 94 + 85.5}{10} = 85.95\%
+        \end{align*}
+
+
+
+        \item Questions \\
+        Three ways I can ask a question about course content are:
+        \begin{itemize}
+            \item During lecture/office hours
+            \item On Piazza
+            \item Contacting instructors using individual email addresses
+        \end{itemize}
+        I am most likely to ask questions on Piazza
+    \end{enumerate}
+    
+
+
+    \item \textbf{Welcome to EECS 376!}
+    \begin{enumerate}
+        \item The function Welcome($n, k$) prints out ``Welcome to EECS 376!'' $n-k$ times, $k$ times. Thus, the number of printed statements can be represented by the function $f(n, k) = (n-k)\times k = -k^2+nk$. This is a simple quadratic function, with a maximum at $k = \frac{n}{2}$. Thus, the function will print the most statements when $k = \frac{n}{2}$.
+    
+    
+        
+        \item Because the number of printed statements is maximized when $k = \frac{n}{2}$, the worst case performance of this function is when $k = \frac{n}{2}$. In this case, due to the $-k^2$ in the function $f(n, k) = -k^2+nk$, Welcome() will print $\frac{n}{2} \times \frac{n}{2} = \frac{n^2}{4}$ statements. Thus, the worst case performance of this function is $O(n^2)$.
+    
+    
+    
+        \item This algorithm \textit{is} efficient, because its worst case performance is $O(n^2)$, which is polynomial time, satisfying the requirements for an efficient function.
+    
+    
+    
+        \item Regardless of the representative base of numbers $n$ and $k$, the quadratic nature of the function $f(n, k) = -k^2+nk$ will hold. Note that the change of base formula indicates that logarithms in different bases only differ by a constant factor (which is ignored by big-$O$ notation). Thus, the function will still have a worst case performance of $O(n^2)$.
+    \end{enumerate}
+
+
+
+    \item \textbf{Lumpy array.}
+    \begin{enumerate}
+        \item The number of addition operations for the $Sum(A)$ function is directly proportional to the number of elements in the array $A$. The function iterates through each element of the array and adds it to a running total only once. Thus, the worst case runtime for $Sum(A)$ is $O(n)$. This makes $Sum(A)$ an efficient function, as it runs in polynomial time with respect to n, the number of elements in its input array.
+    
+    
+    
+        \item If the addition operation of $Sum(A)$ runs in linear $O(k)$ time, and the number of addition operations for the $Sum(A)$ function is $O(n)$, then the total runtime of $Sum(A)$ is $O(nk)$. This is because the number of addition operations is directly proportional to the number of elements in the array, and the time it takes to perform each addition operation is directly proportional to the size of the numbers being added. This worst-case runtime of $O(nk)$ is still polynomial time with respect to the number of elements in the array, making $Sum(A)$ an efficient function.
+    \end{enumerate}
+
+
+
+    \item \textbf{Prof. Upsilon and their oopsie claims.}
+    \begin{enumerate}
+        \item The claim that ``We can upper bound the runtime of $Y$ by $O(n^2)$'' is true. As $n$ approaches infinity, $n \log n$ grows asymptotically slower than $n^2$. Observe that $n \log n \leq n^2 \Rightarrow \log n \leq n$ for all $n > 1$. 
+        
+
+
+        \item The claim that ``On every input, $Y$ runs faster than $X$.'' is not necessarily true. This is because with a runtime of $O(n \log n)$, for small enough values of $n$, $n \log n > n^2$. Thus, it is not necessarily true that ``On every input, $Y$ runs faster than $X$.''
+    
+    
+    
+        \item The claim that ``For all large enough $n$, there is an input of size $n$ for which $Y$ runs faster than $X$.'' is true. As $n$ approaches infinity, $n \log n$ grows asymptotically slower than $n^2$. Specifically, observe that $\lim_{n \to \infty} \frac{n \log n}{n^2} = \lim_{n \to \infty} \frac{\log n}{n} = 0$. Thus, for sufficiently large $n$, there will always be inputs where $Y$ runs faster than $X$.
+        
+
+
+        \item The claim that ``For all large enough $n$, there is an input of size $n$ for which $Z$ runs faster than $Y$.'' is true. As $n$ approaches infinity, $n$ grows asymptotically slower than $n \log n$. Specifically, observe that $\lim_{n \to \infty} \frac{n}{n \log n} = \lim_{n \to \infty} \frac{1}{\log n} = 0$. Thus, for sufficiently large $n$, $Z$ will always run faster than $Y$.
+    \end{enumerate}
+    \hfill \break
+
+
+    \item \textbf{Set of proofs by contra-.}
+    \begin{enumerate}
+        \item If $A \subseteq B$ and $B \subseteq C$, then $A \subseteq C$.
+    
+        \textbf{Proof:} Assume, for the sake of contradiction, that $A \subseteq B$ and $B \subseteq C$, but $A \nsubseteq C$.
+    
+        \begin{enumerate}
+            \item By $A \nsubseteq C$, there exists an element $x \in A$ such that $x \notin C$.
+            \item Since $A \subseteq B$, it must be true that $x \in B$.
+            \item However, since $B \subseteq C$, every element of $B$ must also belong to $C$. Thus, $x \in C$, which contradicts $x \notin C$.
+            \item Therefore, the assumption that $A \nsubseteq C$ is false.
+        \end{enumerate}
+    
+        Thus, $A \subseteq C$, and the transitive property of the subset relation holds.
+        
+
+
+        \item DeMorgan’s Law states:  If $x \in A \cap \overline{B}$, then $x \in \overline{A} \cup \overline{B}$.
+    
+        Contrapositive:  If $x \notin \overline{A} \cup \overline{B}$, then $x \notin A \cap \overline{B}$.
+    
+        \textbf{Proof:}
+        \begin{enumerate}
+            \item If $x \notin \overline{A} \cup \overline{B}$, then $x \notin \overline{A}$ and $x \notin \overline{B}$.
+            \item From $x \notin \overline{A}$, it follows that $x \in A$.  
+            From $x \notin \overline{B}$, it follows that $x \in B$.
+            \item For $x \in A \cap \overline{B}$, $x$ must belong to $A$ and $x \notin B$. However, since $x \in B$, $x \notin A \cap \overline{B}$.
+            \item Thus, if $x \notin \overline{A} \cup \overline{B}$, then $x \notin A \cap \overline{B}$.
+        \end{enumerate}
+    \end{enumerate}
+
+
+
+    \item \textbf{Euclid’s algorithm, extended.}
+    \begin{enumerate}
+        \item $a = b'$, $b = a' - q \cdot b'$ \\
+        \textbf{g=gcd(x, y)} \\
+        We havent changed the gcd calculation invariant of the Euclidean algorithm. We have only changed the way we calculate the new values of $a$ and $b$, thus, $g=gcd(x, y)$ \\
+        \textbf{ax+by=g} \\
+        If y=0, then $g=gcd(x, 0)=x$, which satisfies the equation $ax+by=g$ \\
+        Assuming this is true for recursive $ay+br=g$, we can substitute $a = a'$, $b = b'$, and $r = x - qy$ to get:
+        \begin{align*}
+            a' y + b' (x - qy) = g \\
+            a' y + b' x - b' qy = g \\
+            b' x + (a' - q b') y = g \\
+        \end{align*}
+
+        Thus, we can set $a = b', b = a' - q b'$, and the equation $ax+by=g$ will still hold.
+        
+        \hfill \break
+
+
+        \item Running by hand \\
+        \begin{table}[H]\centering
+        \begin{tabular}{r|rr|rr|rr|rr|rrc}
+            & \multicolumn{2}{c|}{input} & \multicolumn{2}{|c|}{division} & \multicolumn{2}{|c|}{rec ans} & \multicolumn{2}{|c|}{output} \\
+            $i$ & $x$   & $y$  & $q$ & $r$  & $a'$ & $b'$ & $a$ & $b$ & $s$ & $s_{i+1}/s_{i}$ & $\leq 2/3$ ? \\ \hline
+            $0$ & $376$ & $281$ & $1$ & $95$ & -24 & 71 & 71 & -95 & 657 & 376/657 & Y \\
+            $0$ & $281$ & $95$ & $2$ & $91$ & 23 & -24 & -24 & 71 & 376 & 186/376 & Y \\
+            $0$ & $95$ & $91$ & $1$ & $4$ & -1 & 23 & 23 & -24 & 186 & 95/186 & Y \\
+            $0$ & $91$ & $4$ & $22$ & $3$ & 1 & -1 & -1 & 23 & 95 & 7/95 & Y \\
+            $0$ & $4$ & $3$ & $1$ & $1$ & 0 & 1 & 1 & -1 & 7 & 4/7 & Y \\
+            $0$ & $3$ & $1$ & $3$ & $0$ & 1 & 0 & 0 & 1 & 4 & 1/4 & Y \\
+            $0$ & $1$ & $0$ & $0$ & $0$ & -- & -- & 1 & 0 & 1 & -- & -- \\
+            % Add more rows as needed
+        \end{tabular}
+        \end{table}
+
+        The GCD of 281 and 376 is 1. $ax+by=376*71+(281*-95)=1$. The output (of a=71 and b=-95) is correct.
+
+    \end{enumerate}
+\end{enumerate}
 \end{document}

@@ -1,0 +1,252 @@
+\documentclass{article}
+\usepackage{amssymb,amsmath}
+\RequirePackage[boxed]{algorithm}
+\RequirePackage{microtype}
+\RequirePackage{mathtools}
+\RequirePackage{amsthm}
+\RequirePackage{xspace}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref} % must load after hyperref
+\usepackage{fvextra} % To use Verbatim
+\RequirePackage[noend]{algpseudocode}
+\RequirePackage{tikz}
+
+\title{Homework 3}
+\author{Kyle Krause}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    \item \textbf{Self assessment.} \\
+    My answer for 4. b. on Homework 1 is as follows: \\
+    \begin{algorithm}
+        $T(n) = 2T(\frac{2n}{3}) + T(\frac{n}{3})$; If $n>2$, the array is split into its first two-thirds, and its last third. The sort function is called on the first two-thirds, then the last third, then the last two-thirds again, every call. 
+        \\\\
+        The master theorem does not apply to this recurrence relation, as it is not in the form $T(n) = kT(\frac{n}{b}) + O(n^d)$, where $k \geq 1, b > 1, d \geq 0$.
+    \end{algorithm}
+
+    This solution is incorrect. I did not properly identify the form of the recurrence relation, and thought that the second split of the array in the function call was of size $\frac{n}{3}$, when it is actually of size $\frac{2n}{3}$. If I correctly identified this, the recurrence relation would be $T(n) = 3T(\frac{2n}{3}) + O(1)$, and I would have been able to apply the master theorem.
+
+
+    \item \textbf{The power of divide and conquer.} \\
+    \begin{enumerate}
+        \item \textsc{Na\"\i ve} is not efficient with respect to input size. If $b$ is a 4-bit number, the algorithm will run in worst-case $O(2^4) = O(16)$ time. If $b$ is an 8-bit number, the algorithm will run in worst-case $O(2^8) = O(256)$ time. Even though it looks like it is running in linear time, the algorithm is inefficient with respect to input size in bits because an added bit of complexity to $b$ means exponentially more work.\\
+        \pagebreak
+        \item \begin{itemize}
+            \item In $pq\bmod m$, $p$ and $q$ can be rewritten as a sum of components of m and a remainder, i.e., $p=km+r$ and $q=sm+t$. So:\\
+            \begin{align*}
+                pq\bmod m &= (km+r)(sm+t)\bmod m \\
+                &= ksm^2 + kst + rsm + rt \bmod m \\
+                &= ksm^2 + rsm + kst + rt \bmod m \\
+                &= m(ks + rs + kt) + rt \bmod m
+            \end{align*}
+            We can remove all of the $m$ terms from the equation from the $\bmod m$ operation, so the final equation is:
+            \begin{align*}
+                rt \bmod m \\
+            \end{align*} 
+            By definition, $r$ is the remainder of $p$ divided by $m$, and $t$ is the remainder of $q$ divided by $m$. So, $r=p\bmod m$ and $t=q\bmod m$. Therefore, the final equation is:
+            \begin{align*}
+                pq\bmod m &= ((p\bmod m)(q\bmod m))\bmod m
+            \end{align*}
+
+            \item The blank can be filled in as follows:
+            \begin{align*}
+                \text{if $b$ is even, then }(a^{\frac{b}{2}}\bmod m)^2 \bmod m = (a^b) \bmod m \\
+            \end{align*}
+            The blank must be filled by $(a^{\frac{b}{2}})$, because if the equation $((p\bmod m)(q\bmod m))\bmod m = pq\bmod m$ is true, we can plug in $p=a^{\frac{b}{2}}$ and $q=a^{\frac{b}{2}}$ to get the equation:
+            \begin{align*}
+                (a^{\frac{b}{2}}\bmod m)^2 \bmod m = (a^b) \bmod m \\
+            \end{align*}
+        \end{itemize}
+        \pagebreak
+        \item \begin{algorithm}
+            \begin{algorithmic}[1]
+                \Require{Integers $a, b, m$}
+                \Ensure{Computes $a^b \bmod m$}
+                \Function{\text{ExpModulus}}{$a, b, m$}
+                    \State result $=$ 1
+                    \State base $= a \bmod m$
+                    \While{$b > 0$}
+                        \If{$b \bmod 2 == 1$}
+                            \State result $=$ (result $\times$ base) $\bmod m$
+                        \EndIf
+                        \State base $=$ (base $\times$ base) $\bmod m$
+                        \State $b = \lfloor b / 2 \rfloor$
+                    \EndWhile
+                    \State \Return result
+                \EndFunction
+            \end{algorithmic}
+        \end{algorithm}
+        \textbf{Correctness:} \\
+        Base case: If $b=0$, then the function will return 1, which is the correct answer. \\
+        Assume that the function works correctly for $b=k$. This results in two cases: if $k$ is even, then the function will return $(a^{\frac{k}{2}})^2 \bmod m = a^k \bmod m$, and if $k$ is odd, then the function will return $(a^{\frac{k-1}{2}})^2 \times a \bmod m = a^k \bmod m$. \\
+        Thus, the function works correctly for all $b$. \\
+        \textbf{Runtime:} \\
+        Each iteration halves the value of $b$, so the function will run in $O(\log b)$ time. There are no other loops or recursive calls, so the function will run in $O(\log b)$ time. \\
+        \item With an $A^n$ matrix, the algorithm would be modified by starting with a result of the identity matrix, and the base would be the matrix $A$. The base would be squared each iteration, and the result would be multiplied by the base if the power is odd. The algorithm would run in $O(n^3 \log n)$ time, as each iteration halves the value of $n$. This still means $O(\log n)$ iterations, and thus numerical operations, but each iteration would take $O(n^3)$ time. \\
+        \item Using this 2x2 matrix, the algorithm from part (d) without any modulus operations would run in $O(\log n)$ time and compute the kth Fibonacci number. As you multiply the matrix by itself k times, the resultant matrix has the kth Fibonacci number in the first row, second column, or the first column, second row. \\
+        
+    \end{enumerate}
+    \pagebreak
+    \item \textbf{The peak of divide-and-conquer.} \\
+    \begin{enumerate}
+        \item \begin{algorithm}
+            \begin{algorithmic}[1]
+                \Require{Array $C[1 \dots n]$ (a rotation of a strictly increasing array)}
+                \Ensure{Returns the peak in $C$}
+                \Function{\text{FindPeak}}{$C$}
+                    \State $\ell = 1$
+                    \State $r = n$
+                    \While{$\ell < r$}
+                        \State $m = \left\lfloor \frac{\ell + r}{2} \right\rfloor$
+                        \If{$C[m] > C[r]$}
+                            \State $\ell = m + 1$
+                        \Else
+                            \State $r = m$
+                        \EndIf
+                    \EndWhile
+                    \Comment{Now $\ell$ (which equals $r$) is the pivot index, or A's minimum. The peak is right before it.}
+                    \If{$\ell = 1$}
+                        \State \Return $C[n]$
+                    \Else
+                        \State \Return $C[\ell - 1]$
+                    \EndIf
+                \EndFunction
+            \end{algorithmic}
+            \end{algorithm}
+            \textbf{Correctness:}
+            \begin{enumerate}
+                \item Since the original array is strictly increasing, the only place it ``breaks'' in the rotation is exactly where max element wraps around to the beginning. This is the pivot (the minimum in the rotated array).
+                \item The loop maintains the invariant that the pivot index lies in $[\ell, r]$. 
+                    \begin{itemize}
+                        \item If $C[m] > C[r]$, the pivot must be to the right of $m$ (since in a strictly increasing array, $C[m] > C[r]$ indicates that the rotation break has not yet been passed).
+                        \item Otherwise, the pivot is between $\ell$ and $m$. 
+                    \end{itemize}
+                \item Once $\ell = r$, we have identified the pivot exactly. The peak (largest element) is thus immediately before it (wrapping to the end if $\ell=1$).
+            \end{enumerate}
+
+            \textbf{Runtime:}
+            \begin{itemize}
+                \item Each iteration of the while loop performs a single comparison and halves the search interval, reducing $r - \ell$ by at least a factor of 2. This is $O(\log n)$.
+                \item Finding the maximum after identifying the pivot is $O(1)$, so the overall time complexity is $O(\log n)$.
+            \end{itemize}
+        \item \begin{algorithm}
+            \begin{algorithmic}[1]
+                \Require{Array $A[1 \dots n]$ of integers (not necessarily sorted), with $A[0] = A[n+1] = -\infty$}
+                \Ensure{Returns an index $i$ such that $A[i]$ is a local peak; \ $A[i] \ge A[i-1]$ and $A[i] \ge A[i+1]$}
+                \Function{\text{FindLocalPeak}}{$A,  1,  n$}
+                    \State $\ell = 1$
+                    \State $r = n$
+                    \While{$\ell \le r$}
+                        \State $m = \left\lfloor \frac{\ell + r}{2} \right\rfloor$
+                        \If{($A[m] \ge A[m-1]$) \textbf{and} ($A[m] \ge A[m+1]$)}
+                            \State \Return $m$
+                        \ElsIf{$A[m-1] > A[m]$}
+                            \Comment{A local peak must lie to the left.}
+                            \State $r = m - 1$
+                        \Else
+                            \Comment{A local peak must lie to the right.}
+                            \State $\ell = m + 1$
+                        \EndIf
+                    \EndWhile
+                \EndFunction
+            \end{algorithmic}
+            \end{algorithm}
+            \pagebreak
+            \textbf{Correctness:}
+            \begin{enumerate}
+                \item At any point, our search interval $[\ell, r]$ contains at least one local peak. When we pick $m = \lfloor (\ell + r)/2 \rfloor$:
+                \begin{itemize}
+                    \item If $A[m] \ge A[m-1]$ and $A[m] \ge A[m+1]$, then $m$ is immediately returned as a local peak.
+                    \item If $A[m-1] > A[m]$, we move the search to $[\ell, m-1]$; there must be a peak there because we have discovered a ``rising slope'' to the left.
+                    \item Otherwise, we move the search to $[m+1, r]$, because $A[m+1] \ge A[m]$ shows a rising slope to the right, guaranteeing a local peak to the right.
+                \end{itemize}
+                
+                \item Eventually the interval $[\ell, r]$ collapses to a single position, which must satisfy the local‐peak condition (or we found a local peak earlier).
+            \end{enumerate}
+            \textbf{Runtime:}
+            Each iteration of the while loop performs a single comparison and halves the search interval, reducing $r - \ell$ by at least a factor of 2. This is $O(\log n)$.
+    \end{enumerate}
+    \pagebreak
+
+    \item \textbf{Warming up with recurrence relations.} \\
+    \begin{enumerate}
+        \item Let $W(k)$ be the number of ways to reach the $k$-th step. Then:
+        \[
+        W(k) = W(k - a)  +  W(k - b),
+        \]
+        with base cases $W(0) = 1$ (one way to do nothing) and $W(k) = 0$ for $k < 0$. \\
+        \item Let $R(n)$ be the maximum profit obtainable from a rod of length $n$. Then:
+        \[
+        R(n) = \max_{1  \le  i  \le  n}
+        P[i] + R(n - i),
+        \]
+        with the base case $R(0) = 0$. \\ 
+        \item Suppose $S = \{s_1, s_2, \ldots, s_m\}$ and $T$ is the target. Define $F(i,t)$ to be true if-and-only-if there is a subset of $\{s_1,\ldots,s_i\}$ summing to $t$. Then:
+        \[
+        F(i,t) = F(i-1,t) \lor  (t \ge s_i)  \wedge  F(i-1,t - s_i).
+        \]
+        With base cases:
+        \[
+        F(0,0) = \text{true}, \quad F(0,t) = \text{false}   (\text{for } t>0).
+        \]
+    \end{enumerate}
+
+
+
+    \item \textbf{Hiking in Michigan!} \\
+    \begin{enumerate}
+        \item Define $p(i)$ to be the minimum possible total penalty when starting from hotel~0 (Ann Arbor) and ending at hotel~$i$. To reach hotel~$i$, one must come from some hotel~$j$ with $0 \le j < i$. The ``daily penalty'' for traveling directly from $j$ to $i$ is $200 - (d_i - d_j)^2$. Therefore, to find $p(i)$, we consider all possible previous hotels $j$ and choose the one that minimizes the total penalty.
+
+        \[
+        p(i)  =  \min_{0 \le j < i}  p(j)  +  200 - (d_i - d_j)^2
+        \quad 
+        \text{for } i = 1, 2, \ldots, n,
+        \]
+        With base case
+        \[
+        p(0) = 0.
+        \]
+        Here, $d_0 = 0$ (Ann Arbor) and $d_1 < d_2 < \cdots < d_n$ are the distances of the $n$ hotels from Ann Arbor. The minimum possible total penalty is $p(n)$. \\
+    
+        \item \begin{algorithm}
+            \begin{algorithmic}[1]
+            \Require An array of hotel distances $d[0..n]$, where $d_0=0 < d_1 < \cdots < d_n$; $p[i]$ will be the minimum penalty to end at hotel $i$.
+            \Ensure Returns the minimum total penalty for traveling from hotel 0 (Ann Arbor) to hotel $n$ (Hancock).
+
+            \State Initialize an array $p[\,0..n]$ for storing minimum penalties.
+            \State Initialize an array \textit{choice}$[0..n]$ for back‐pointers (used to reconstruct which hotels to stop at).
+            \State $p[0] \gets 0 \quad \triangleright$ Base case: no penalty before any travel.
+            \For{$i \gets 1$ to $n$}
+                \State $p[i] \gets \infty$
+                \For{$j \gets 0$ to $i-1$}
+                    \State \textit{cost} $\gets p[j] + 200 - (d_i - d_j)^2$
+                    \If{\textit{cost} $<$ $p[i]$}
+                        \State $p[i] \gets \textit{cost}$
+                        \State \textit{choice}[\,i] $\gets j$
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return $p[n]$
+        \end{algorithmic}
+        \end{algorithm}
+        \pagebreak
+        \textbf{Correctness:}
+        \begin{enumerate}
+            \item We compute $p(i)$ in increasing order of $i$.  By the time we compute $p(i)$, we already know all $p(j)$ with $j < i$, ensuring correctness of each step.
+            \item Since $p(i)$ is correctly computed for all $i$ in ascending order, $p(n)$ necessarily holds the minimum total penalty for reaching hotel~$n$.  Storing $\mathit{choice}[i]$ lets us trace back which $j$ provided the minimum penalty at each step, thus recovering an optimal sequence of stops.
+        \end{enumerate}
+        \textbf{Runtime:} There are $n+1$ entries $p[0],\dots,p[n]$.  For each $i$, we perform an inner loop from $0$ to $i-1$, taking $O(i)$ time.  A loop from 0 to i, i times, gives an $O(n^2)$ overall time complexity.
+    \end{enumerate}
+    
+
+
+
+
+\end{enumerate}
+\end{document}
