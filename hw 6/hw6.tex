@@ -81,7 +81,7 @@
     \begin{solution} 
     The Turing machine decides the language $\set{ w \# w : w \in \set{0,1}^* }$. For index $i$ in the string to the left of the \#, the machine removes \textsc{Left}($i$), and writes an x in the $i$th position in the string to the right of the \# if the characters at those positions are the same. If they are not the same, the machine rejects. If the result is a \# followed by a string of x's, the machine accepts. Otherwise, it rejects.
     \end{solution}
-
+    \pagebreak
     \part[2] A \emph{bitwise complement} of a binary string is the result of flipping each bit, i.e., every $0$ is replaced with $1$ and vice versa. For example, the bitwise complement of $101$ is $010$. 
     
     Consider the following language:
@@ -180,7 +180,7 @@
   \else
   \pagebreak
   \fi
-
+  \pagebreak
   
 \medskip \hrule \medskip 
 \emph{\cref{halt-alt} through \cref{loop-n-loop} contain content covered in Lecture 11 on 2/17.}
@@ -221,26 +221,38 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     In both cases, a contradiction is reached, and therefore, the assumption that $\htm$ is decidable must be false.
     \end{solution}
 
+\pagebreak
   \question \textbf{Turing reduction warmup.} \label{prob:decidablity} \nopagebreak
   
   \begin{parts}
 
     \part[4] Prove or disprove: Every language is Turing-reducible to its complement, i.e., $L \lT \overline{L}$ for any language $L$.
 
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+    \[
+    \text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+    \]
+    Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+    \end{solution}
     
     \part[4] Prove or disprove: A decidable language is Turing reducible to any language, i.e., $L \lT L'$ for any decidable language $L$ and any language $L'$. 
 
     (A disproof could consist of specific languages $L, L'$ and a proof that the statement does not hold for them.)
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Let \( L \) be decidable and \( D \) be a decider for \( L \). Consider a Turing machine that on input \( x \) uses the oracle to simulate \( D(x) \), but ignores any queries to the oracle for \( L' \). With this Turing machine, \( L \lT L' \).
+    \end{solution}
     
     \part[4] Prove or disprove: let~$L$ be a language; if there exists a language~$L'$ such that $L \lT L'$, then $L$ is decidable.
 
     (A disproof could consist of specific languages~$L$ and~$L'$ where $L \lT L'$ but~$L$ is undecidable.)
 
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Let \( L = \htm \), which is undecidable. Since every language is trivially Turing-reducible to itself (\( \htm \lT \htm \)), there exists a language \( L' \) such that \( L \lT L' \) while \( L \) is undecidable. Thus, \( L \lT L' \) does not imply that \( L \) is decidable.
+    \end{solution}
   \end{parts}
+\pagebreak
 
 \medskip \hrule \medskip
     \emph{If you haven't already, please read \href{https://drive.google.com/file/d/1hryh8KKZmLlzNPIej31PHR1QkcNAKx9D/view}{Handout 5: Turing Reductions} and apply it in your solution for the next few problems.}
@@ -287,8 +299,11 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     \end{align*}
     So, we have shown that $D_A$ decides $A$, and hence $A \lT B$. 
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    The proof equates \(\{a^k b^k : k \ge 0\}\) with \(a^*b^*\), which is incorrect. While every string of the form \(a^k b^k\) is in \(a^*b^*\), the converse is false, for example: \(aab\) is in \(a^*b^*\) but not of the form \(a^k b^k\). Thus, the reduction does not correctly preserve inclusion in language \(A\).
     
+    \end{solution}
+    \pagebreak
     \part[5]
     \textbf{Statement:} $\atm$ Turing-reduces to \emph{any} language~$L$ where $L \neq \emptyset$ and $L \neq \Sigma^*$.
     
@@ -322,9 +337,12 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     \end{align*}
     Thus, $D_A$ decides $\atm$, hence we have shown that $\atm \lT L$.
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    The reduction requires knowledge on whether \(M(x)\) accepts (“if \(M(x)\) accepts then”) to choose \(w\). But, deciding whether \(M(x)\) accepts is the undecidable problem \(\atm\). This proof relies on solving an undecidable problem to construct its reduction. Thus, the given proof is incorrect. 
+    \end{solution}
   \end{parts}
-    
+  
+  \pagebreak
   \question \textbf{Loop and loop.} \label{loop-n-loop}
   \nopagebreak
   
@@ -334,12 +352,43 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     \] Prove that $\htm \lT \lang{AND-LOOP}$.
     Note that since $\htm$ is undecidable, this means that $\lang{AND-LOOP}$ is undecidable.
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Given an instance \((\langle M\rangle,x)\) of \(\htm\), define a Turing machine \(M'\) that on every input \(w\) does:
+    \begin{enumerate}
+      \item Simulate \(M\) on \(x\).
+      \item If the simulation halts, then halt; otherwise, loop forever.
+    \end{enumerate}
+    Let \(y_1 = y_2 = 0\) (a fixed string). Notice that:
+    \[
+    (M'\text{ loops on both } y_1 \text{ and } y_2) \text{ if and only if } (M \text{ does not halt on } x).
+    \]
+    By running \(\lang{AND-LOOP}\) with \((\langle M'\rangle, y_1, y_2)\), we decide whether \(M\) halts on \(x\). Therefore, \(\htm \leq_T \lang{AND-LOOP}\).
+    \end{solution}
 
     \part[6] Define \[\lang{SELF-LOOP} = \set{\inner{M} : M \text{ is a TM that loops on input } \inner{M}} \text.\] Prove that $\Lbarber \lT \lang{SELF-LOOP}$.
     Note that because $\Lbarber$ is undecidable, we can conclude $\lang{SELF-LOOP}$ is undecidable.
 
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Recall that:
+    \[
+    \Lbarber = \{\langle M\rangle : M \text{ does not accept } \langle M\rangle\}.
+    \]
+    By the Recursion Theorem, given \(\langle M\rangle\) we can construct a Turing machine \(M'\) with description \(\langle M'\rangle\) that behaves as follows on input \(w\):
+    \[
+    M'(w)=
+    \begin{cases}
+    \text{Simulate } M \text{ on } \langle M\rangle;\\[1ex]
+    \quad \text{if } M \text{ accepts } \langle M\rangle, \text{ then halt;}\\[1ex]
+    \quad \text{otherwise, loop forever}. & \text{if } w = \langle M'\rangle;\\[1ex]
+    \text{Halt immediately}. & \text{if } w \neq \langle M'\rangle
+    \end{cases}
+    \]
+    Then, \(M'\) loops on input \(\langle M'\rangle\) if and only if \(M\) does not accept \(\langle M\rangle\); that is,
+    \[
+    \langle M\rangle \in \Lbarber \iff \langle M'\rangle \in \lang{SELF-LOOP}.
+    \]
+    Thus, \(\Lbarber \leq_T \lang{SELF-LOOP}\).
+    \end{solution}
 
 \end{parts}
 
@@ -360,7 +409,14 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     
     Determine, with proof, if $\lang{I'M-FINITE}$ is decidable.
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    \(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+    \begin{enumerate}
+      \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+      \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+    \end{enumerate}
+    Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+    \end{solution}
 
     \part [8] Define the language 
     \[
@@ -368,11 +424,20 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
     \] 
     Determine, with proof, if $\lang{FINITE}$ is decidable.
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Note that $0^n$ is a string of $n$ zeros i.e, $0^3 = 000$.\\
+    $\lang{FINITE}$ is undecidable, as it is Turing-reducible to \(\atm\). Given an instance \((\langle M\rangle, x)\) of \(\atm\), construct a Turing machine \(M'\) as follows:
+    \begin{enumerate}
+        \item On input \(w\), check if \(w\) is of the form \(0^n\); if not, reject.
+        \item If \(w=0^n\), simulate \(M\) on \(x\) for \(n\) steps.
+        \item If the simulation accepts within \(n\) steps, accept; otherwise, reject.
+    \end{enumerate}
+    If \(M(x)\) does not accept, then for every \(n\) the simulation fails and \(L(M')\) is empty (finite). If \(M(x)\) accepts, then there exists \(n_0\) such that for all \(n \ge n_0\), \(M\) accepts \(x\) within \(n\) steps, so \(M'\) accepts all strings of the form \(0^n\) with \(n \ge n_0\), making \(L(M')\) infinite. Thus, deciding whether \(L(M')\) is finite would decide \(\atm\), which is undecidable. Hence, \(\lang{FINITE}\) is undecidable.
+    \end{solution}
     
 \end{parts}
 
-
+\pagebreak
   \question \textbf{Turing reductions.} \label{tr}
 
   For each of the following languages, show that it is undecidable via a Turing reduction from a language we have already shown is undecidable.
@@ -382,59 +447,37 @@ Suppose for the sake of contradiction that some Turing machine $H$ decides $\htm
 
     \hint{You may call an oracle multiple times.}
     
-    \begin{solution} \end{solution}
+    \begin{solution} 
+    Given an instance $(\langle M\rangle,x)$ of $\overline{\atm}$, construct TMs $M_1$ and $M_2$ as follows.
+    \begin{itemize}
+      \item Define $M_2$ to be the TM that rejects every input ($L(M_2)=\emptyset$).
+      \item Define $M_1$ to operate on every input $w$ by simulating $M$ on $x$. If $M$ ever accepts $x$, then $M_1$ accepts $w$ if $w=0$ (fixed string) and rejects otherwise; if $M$ does not accept $x$, then $M_1$ never accepts any input.
+    \end{itemize}
+    Thus, if $M$ does not accept $x$, then $L(M_1)=\emptyset\subseteq \emptyset=L(M_2)$; but if $M$ accepts $x$, then $L(M_1)=\{0\}\not\subseteq \emptyset$. Therefore,
+    \[
+    (\langle M\rangle,x)\in\overline{\atm}\iff (\langle M_1\rangle,\langle M_2\rangle)\in\lang{SUBSET}.
+    \]
+    Since $\overline{\atm}$ is undecidable, $\lang{SUBSET}$ is undecidable.
+    \end{solution}
 
  \part [8] $\lang{FASTER} = \set{(\inner{M_1}, \inner{M_2}, x) : M_1(x) \text{ runs for strictly fewer steps than } M_2(x) \text{ does}}$.
 
     \hint{A computation that halts takes strictly fewer steps than one that loops.
     If both computations loop, then neither takes strictly fewer steps than the other.}
     
-    \begin{solution} \end{solution}
-  
-  \end{parts}
-
-  \bonusquestion \textbf{Goldbach conjecture (optional extra credit).} 
-  
-  The \emph{Goldbach Conjecture} states that every even integer greater than two is the sum of two primes.
-  For example, $20=7+13$, $22=3+19$, $24=5+19$, etc. The conjecture has been confirmed for all even integers up to about $4 \times 10^{18}$, but no proof or counterexample is known; resolving the conjecture is one of the oldest unsolved problems in mathematics.
-
-  In this problem, you will show that if we had a ``magic box'' (an oracle) that decides $\htm$, then we would have an algorithm that determines whether the Goldbach Conjecture is true!
-  More generally, an oracle for $\htm$ would let us resolve many open questions in mathematics.
-
-  \begin{parts}
-    \bonuspart [2] Consider the language
+    \begin{solution} 
+    Given an instance $(\langle M\rangle,x)$ of $\htm$, construct TMs $M_1$ and $M_2$ and arbitrary string $y$ as follows:
+    \begin{itemize}
+      \item Define $M_1$ on input $y$ to simulate $M$ on $x$. If $M(x)$ halts then $M_1$ halts; otherwise, $M_1$ loops forever.
+      \item Define $M_2$ on input $y$ to immediately loop forever.
+    \end{itemize}
+    Thus, if $M(x)$ halts, then $M_1(y)$ halts in a finite number of steps while $M_2(y)$ never halts, and hence $M_1(y)$ must run for strictly fewer steps than $M_2(y)$. If $M(x)$ does not halt, both $M_1(y)$ and $M_2(y)$ loop, and no one runs strictly fewer steps than the other. Thus,
     \[
-        \lang{GOLDBACH} = \set{x \in \N: \text{$\forall y > x$, $2y$ is the sum of two primes}}
+    (\langle M\rangle,x)\in\htm\iff (\langle M_1\rangle,\langle M_2\rangle,y)\in\lang{FASTER}.
     \]
-    State, with brief justification, whether $\lang{GOLDBACH}$ is decidable.
-
-    \begin{solution} \end{solution}
-    
-
-    
-    \bonuspart [2]
-    Let $H$ be an oracle that decides $\htm$.
-    Give a Turing machine $M_G$ that has access to $H$ and, on any input, accepts if the Goldbach Conjecture is true, and rejects otherwise.
-
-    \hint{First construct a Turing machine that halts if and only if the Goldbach Conjecture is false. You may use a function $\algo{isPrime}$ that returns whether a given number is prime (a Turing machine can do this).} \label{Goldbach-a}
-    
-    \begin{solution} \end{solution}
-
-
-    \bonuspart [1]
-    Now consider the language
-    \[ 
-        \lang{SMALL-HALT} = \set{(\inner{M},x) : M \text{ is a TM, } M(x) \text{ halts, and } (\inner{M},x) \text{ has $< 1000$ characters}} .
-    \] 
-    
-    We asserted in class that this language is decidable, i.e., some TM~$M_{SH}$ decides it.
-
-    Briefly explain whether your solution from \cref{Goldbach-a} still works if you replace the oracle~$H$ with the Turing machine~$M_{SH}$---if so, this would yield an ordinary Turing machine (with no oracle) that, when run on any input, would tell us whether the Goldbach Conjecture is true! 
-    
-    \emph{Food of thought: If your answer is `yes', why hasn't anyone prove or disprove the Goldbach Conjecture?}
-      
-    \begin{solution} \end{solution}
-
+    Since $\htm$ is undecidable, $\lang{FASTER}$ is undecidable.
+    \end{solution}
+  
   \end{parts}
   
 \end{questions}
