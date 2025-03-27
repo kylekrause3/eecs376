@@ -1,0 +1,70 @@
+For the following latex code, find the solution and give the solution in a copy-pastable latex format. I am looking for the clear, concise, and correct solution to this foundational computer science theory problem. Do not include any explanations, your answer should look like a realistic response from a perfect student. Try not to use pronouns like "I" or "we", opting to replace language like "we disprove" to just "disprove" and "we construct" to "construct".
+
+
+Please note that all of your polynomial-time mapping reductions need to include all of the steps outlined here, in this NP-Hardness Proof showing that 3SAT ≤_p VERTEX-COVER: [
+1. Describe the reduction. That is, show how to efficiently convert an arbitrary instance of 3SAT
+into a corresponding instance of VERTEX-COVER. In other words, define the function f.
+An important remark is that, when defining a reduction, we cannot use the solution of the
+original problem, because it may not even exist—and even if it does, in general we do not know
+how to compute such a solution in polynomial time. For example, in our reduction from 3SAT,
+we cannot say “construct a vertex for every variable that is set to true in a satisfying assignment
+of the formula”—the reduction is not given a satisfying assignment, and we do not know how to
+compute one efficiently. Instead, the reduction needs to manipulate just the input formula so that if
+the formula happens to be satisfiable (which it may or may not be), then the constructed graph
+will have a vertex cover of the desired size, and vice versa.
+2. Explain why the reduction runs in polynomial time.
+3. Prove that the given original formula φ is a “yes” instance of 3SAT if and only if the
+constructed instance (G, k) = f(φ) is a “yes” instance of VERTEX-COVER. In other words,
+prove that φ ∈ 3SAT ⇐⇒ f(φ) ∈ VERTEX-COVER. To do this we prove each direction
+separately:
+(a) ( =⇒ direction) If φ is a “yes” instance of 3SAT, then the constructed (G, k) = f(φ) is a
+“yes” instance of VERTEX-COVER.
+(b) ( ⇐= direction) If the constructed (G, k) = f(φ) is a “yes” instance of VERTEX-COVER,
+then the original formula φ is a “yes” instance of of 3SAT.
+]
+
+
+
+Here is a previous solution to another problem from a different homework. Use this as a style guide for your response. [
+\begin{solution} 
+\(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+\begin{enumerate}
+    \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+    \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+\end{enumerate}
+Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+\end{solution}
+
+\begin{solution} 
+Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+\[
+\text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+\]
+Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+\end{solution}
+]
+
+
+Here is the question for you to provide latex output solution for: [
+  \question [8] \textbf{Big independent sets.} 
+
+  Recall that an \emph{independent set} of an undirected graph $G=(V,E)$ is a subset $I \subseteq V$ such that no two (distinct) vertices in~$I$ have an edge between them.
+
+  In lecture, we proved that the following language is \NP-complete.
+  \[
+    \IS = \set{(G,k) : G = (V,E) \text{ has an independent set of size (at least) } k} .
+  \]
+
+  In this problem, we will explore the following variant of $\IS$. 
+
+    \newcommand{\BigIS}{\textsc{BIG-IS}}
+    \[
+      \BigIS = \set{ G : G=(V,E) \text{ has an independent set of size (at least) } |V|-1 } .
+    \]
+  
+    Either prove that $\BigIS\in \P$ (by giving a polynomial-time algorithm that decides $\BigIS$) or that $\BigIS$ is $\NP$-hard (by showing that $\IS \ptimemap \BigIS$). If you are giving a reduction, remember to include all steps as in \cref{subgraphiso} \cref{subgraphiso-ptmr}.
+    
+    \begin{solution} 
+    
+    \end{solution}
+]
