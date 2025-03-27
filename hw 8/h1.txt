@@ -1,0 +1,164 @@
+For the following latex code, find the solution and give the solution in a copy-pastable latex format. I am looking for the clear, concise, and correct solution to this foundational computer science theory problem. Do not include any explanations, your answer should look like a realistic response from a perfect student. Try not to use pronouns like "I" or "we", opting to replace language like "we disprove" to just "disprove" and "we construct" to "construct". Make sure your response is in a black box that is copy/pastable.
+
+
+Please note that all of your polynomial-time mapping reductions need to include all of the steps outlined here, in this NP-Hardness Proof showing that 3SAT ≤_p VERTEX-COVER: [
+1. Describe the reduction. That is, show how to efficiently convert an arbitrary instance of 3SAT
+into a corresponding instance of VERTEX-COVER. In other words, define the function f.
+An important remark is that, when defining a reduction, we cannot use the solution of the
+original problem, because it may not even exist—and even if it does, in general we do not know
+how to compute such a solution in polynomial time. For example, in our reduction from 3SAT,
+we cannot say “construct a vertex for every variable that is set to true in a satisfying assignment
+of the formula”—the reduction is not given a satisfying assignment, and we do not know how to
+compute one efficiently. Instead, the reduction needs to manipulate just the input formula so that if
+the formula happens to be satisfiable (which it may or may not be), then the constructed graph
+will have a vertex cover of the desired size, and vice versa.
+2. Explain why the reduction runs in polynomial time.
+3. Prove that the given original formula φ is a “yes” instance of 3SAT if and only if the
+constructed instance (G, k) = f(φ) is a “yes” instance of VERTEX-COVER. In other words,
+prove that φ ∈ 3SAT ⇐⇒ f(φ) ∈ VERTEX-COVER. To do this we prove each direction
+separately:
+(a) ( =⇒ direction) If φ is a “yes” instance of 3SAT, then the constructed (G, k) = f(φ) is a
+“yes” instance of VERTEX-COVER.
+(b) ( ⇐= direction) If the constructed (G, k) = f(φ) is a “yes” instance of VERTEX-COVER,
+then the original formula φ is a “yes” instance of of 3SAT.
+]
+
+
+Here is a previous solution to another problem from a different homework. Use this as a style guide for your response. [
+\begin{solution} 
+\(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+\begin{enumerate}
+    \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+    \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+\end{enumerate}
+Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+\end{solution}
+
+\begin{solution} 
+Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+\[
+\text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+\]
+Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+\end{solution}
+
+\begin{solution}
+  Disprove; define
+  \[
+  L \;=\; \{\,\varphi \mid \varphi\in \text{3SAT}\}\;\cup\;\{\,\langle M\rangle \mid M\text{ halts on the empty input}\}.
+  \]
+  \textbf{1. Reduction:} Given an instance \(\varphi\) of 3SAT, let \(f(\varphi)=\varphi\).\\
+  \textbf{2. Polynomial Time:} This is the identity function; polynomial time.\\
+  \textbf{3. Correctness:} 
+  \begin{itemize}
+  \item (\(\Rightarrow\)) If \(\varphi\) is satisfiable, then \(\varphi \in L\), so \(f(\varphi)\in L\).
+  \item (\(\Leftarrow\)) If \(f(\varphi)=\varphi\in L\), then \(\varphi\) must be a satisfiable 3SAT instance. 
+  \end{itemize}
+  Hence 3SAT \(\leq_p\) \(L\), so \(L\) is \NP-hard. However, deciding \(L\) requires solving the Halting Problem, so \(L\) is not decidable. Therefore, not all \NP-hard languages are decidable.
+\end{solution}
+] ie. do not include any explanations, just the solution, in a similar format to the above, without any crazy latex techniques.
+
+
+
+
+Here is the question for you to provide latex output solution for: [
+  \question \textbf{Cook-Levin windows.}
+
+  Recall from lecture that one critical ingredient in the proof of the Cook-Levin theorem is to specify which contents of the $2\times 3$ ``windows'' of the verifier's computation tableau are valid.
+
+    \begin{parts}
+        \part [6] Specify \emph{all} the valid $2 \times 3$ window contents that could appear in two adjacent rows of the tableau, if those rows represent the verifier TM taking the following transition:
+  \begin{center}
+    \begin{tikzpicture}
+      % Draw circles
+      \node[circle,draw,thick] (qa) at (0,0) {$q_a$};
+      \node[circle,draw,thick] (qb) at (3,0) {$q_b$};
+      
+      % Connect circles with arrow
+      \draw[->, thick] (qa) -- (qb) node[midway, above] {$1\to \bot,L$};
+    \end{tikzpicture}
+  \end{center}
+  
+  Since these windows are from two adjacent rows that represent taking the above transition, it cannot be the case, for example, that~$q_a$ appears in the bottom row of any of these windows.
+
+  For simplicity, you can assume that the symbols in the cells of the window are restricted to $\set{0, 1, \bot,q_a,q_b}$.
+  Recall that there can be other symbols in the rows, such as the ``boundary'' symbol~$\#$ and ``separator'' symbol $\$$, but we will ignore those here.
+  
+  To avoid having to write out many similar windows, you may use one or more variables~$s_i$ to indicate that a cell could have any of $0$, $1$, or~$\bot$.
+  Such a variable, when repeated in multiple cells, represents the same symbol in every such cell.
+  For example, instead of writing all three of the following windows (which may or may not be valid!):
+  \[
+    \begin{array}{|c|c|c|}
+      \hline
+      0 & 0 & 1 \\
+      \hline
+      0 & 0 & \bot \\
+      \hline
+    \end{array}
+    \quad
+    \begin{array}{|c|c|c|}
+      \hline
+      0 & 1 & 1 \\
+      \hline
+      1 & 0 & \bot \\
+      \hline
+    \end{array}
+    \quad
+    \begin{array}{|c|c|c|}
+      \hline
+      0 & \bot & 1 \\
+      \hline
+      \bot & 0 & \bot \\
+      \hline
+    \end{array}
+  \]
+  you could simply write
+  \[\begin{array}{|c|c|c|}
+      \hline
+      0 & s_1 & 1 \\
+      \hline
+      s_1 & 0 & \bot \\
+      \hline
+    \end{array} \; .
+  \]
+  If needed, you may use multiple variables ($s_1, s_2, \ldots$) in a single window.
+
+  Be sure to include all valid window contents that represent the head of the TM being in \emph{both} rows of the window, all those that represent the head being in \emph{only one} of the rows of the window, and all those that represent the head not being in the window at all.
+  Do not include any invalid windows.
+
+  You do not need to provide any justification. 
+
+  \begin{solution} 
+  
+  \end{solution}
+
+   \part [5] In the proof of Cook-Levin Theorem, we claimed that:
+   \begin{quote}
+        If every 2-by-3 window is valid, and the first row is the start configuration, then each row of the tableau is a configuration that yields the next row.
+   \end{quote}
+
+    Interestingly, the claim does not hold for 2-by-2 windows: it is possible for all $2 \times 2$ windows to be valid while the overall transition is invalid. 
+
+    Give an example by first defining one or more Turing machine transitions, then providing two adjacent rows where each $2 \times 2$ window is valid, but the transition is incorrect. 
+
+    \hint{consider an invalid pair of rows in which the active state of the head ``disappears''.}
+
+    \label{CL-window-b}
+
+\begin{solution} 
+
+\end{solution}
+
+    \part [4] Towards proving the Cook-Levin Theorem in lecture, we outlined a proof of the following statement: 
+    \begin{quote}
+      Let language $L \in \NP$ be arbitrary, and fix an efficient verifier $\textsc{VerifyL}$ for~$L$.
+      Given any instance $x$ of $L$, in polynomial time we can construct an instance $\phi$ of $\SAT$ such that $\phi$ is satisfiable \emph{if and only if} there \emph{exists} a $c$ such that the tableau of $\textsc{VerifyL}(x,c)$ has $q_\text{accept}$ in it.
+    \end{quote}
+    Briefly explain why proving this statement proves that SAT is \NP-hard.
+    
+    \begin{solution} 
+    
+    \end{solution}
+
+    \end{parts}
+]
