@@ -1,0 +1,105 @@
+For the following latex code, find the solution and give the solution in a copy-pastable latex format. I am looking for the clear, concise, and correct solution to this foundational computer science theory problem, priotitizing simplistic explanation and logical thoroughness. Do not include any explanations, your answer should look like a realistic response from a perfect student. I do not want any sorts of titles or re-stating of the problem, I just want the raw solution. Try not to use pronouns like "I" or "we", opting to replace language like "we disprove" to just "disprove" and "we construct" to "construct". Make sure your response is in its own black box copy-pastable latex environment box.
+
+
+Please note that all of your polynomial-time mapping reductions need to include all of the steps outlined here, in this NP-Hardness Proof showing that 3SAT ≤_p VERTEX-COVER: [
+1. Describe the reduction. That is, show how to efficiently convert an arbitrary instance of 3SAT
+into a corresponding instance of VERTEX-COVER. In other words, define the function f.
+An important remark is that, when defining a reduction, we cannot use the solution of the
+original problem, because it may not even exist—and even if it does, in general we do not know
+how to compute such a solution in polynomial time. For example, in our reduction from 3SAT,
+we cannot say “construct a vertex for every variable that is set to true in a satisfying assignment
+of the formula”—the reduction is not given a satisfying assignment, and we do not know how to
+compute one efficiently. Instead, the reduction needs to manipulate just the input formula so that if
+the formula happens to be satisfiable (which it may or may not be), then the constructed graph
+will have a vertex cover of the desired size, and vice versa.
+2. Explain why the reduction runs in polynomial time.
+3. Prove that the given original formula φ is a “yes” instance of 3SAT if and only if the
+constructed instance (G, k) = f(φ) is a “yes” instance of VERTEX-COVER. In other words,
+prove that φ ∈ 3SAT ⇐⇒ f(φ) ∈ VERTEX-COVER. To do this we prove each direction
+separately:
+(a) ( =⇒ direction) If φ is a “yes” instance of 3SAT, then the constructed (G, k) = f(φ) is a
+“yes” instance of VERTEX-COVER.
+(b) ( ⇐= direction) If the constructed (G, k) = f(φ) is a “yes” instance of VERTEX-COVER,
+then the original formula φ is a “yes” instance of of 3SAT.
+]
+
+
+Here is a previous solution to another problem from a different homework. Use this as a style guide for your response. [
+\begin{solution} 
+\(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+\begin{enumerate}
+    \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+    \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+\end{enumerate}
+Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+\end{solution}
+
+\begin{solution} 
+Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+\[
+\text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+\]
+Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+\end{solution}
+
+\begin{solution}
+  Disprove; define
+  \[
+  L \;=\; \{\,\varphi \mid \varphi\in \text{3SAT}\}\;\cup\;\{\,\langle M\rangle \mid M\text{ halts on the empty input}\}.
+  \]
+  \textbf{1. Reduction:} Given an instance \(\varphi\) of 3SAT, let \(f(\varphi)=\varphi\).\\
+  \textbf{2. Polynomial Time:} This is the identity function; polynomial time.\\
+  \textbf{3. Correctness:} 
+  \begin{itemize}
+  \item (\(\Rightarrow\)) If \(\varphi\) is satisfiable, then \(\varphi \in L\), so \(f(\varphi)\in L\).
+  \item (\(\Leftarrow\)) If \(f(\varphi)=\varphi\in L\), then \(\varphi\) must be a satisfiable 3SAT instance. 
+  \end{itemize}
+  Hence 3SAT \(\leq_p\) \(L\), so \(L\) is \NP-hard. However, deciding \(L\) requires solving the Halting Problem, so \(L\) is not decidable. Therefore, not all \NP-hard languages are decidable.
+\end{solution}
+] ie. do not include any explanations, just the solution, in a similar format to the above, without any crazy latex techniques.
+
+
+
+This question is in multiple parts. These are the first two parts.
+Here is the question for you to provide latex output solution for: [
+  \question \textbf{Allocating cashiers.} 
+
+    You have been appointed as the manager of Meijer, and are responsible for overseeing the team of cashiers. It is closing time, but a number of customers are waiting with full carts. 
+
+    Your cashiers are tired and ready to go home, so you want to minimize the number of items each cashier needs to scan to get through all of the customers. 
+    
+    We formalize this as the problem of least-item checkout.
+    The input is a number of cashiers~$n$ and the number of items $c_{1}, \ldots, c_{m}$ that each of the~$m$ customers have, i.e., $c_{i}$ is the number of items that a cashier would need to scan for customer $i$ to check out.
+    The desired output is an allocation of the customers to the cashiers that minimizes the workload.
+    The workload of an allocation is the maximum, over all the cashiers, of the number of items scanned by a single cashier.
+    Each customer must be served by a single cashier, and cashiers process their customers sequentially without breaks.
+    
+\newcommand{\Allocate}{\cproblem{ALLOCATE}}
+Formally, this can be defined as:
+\[
+    \Allocate = \left\{
+    \begin{aligned}
+    (n, C=\set{c_1\ldots c_m}, k) :~ &\text{$C$ can be partitioned into $n$ subsets}\\
+    &\text{where each subset sums to at most $k$}
+    \end{aligned}
+    \right\}.
+\]
+Note: A \emph{partition} of a set $S$ is a collection of subsets $\set{S_1, \ldots, S_n}$ such that $S_i \cap S_j = \emptyset$ for all $i \neq j$ and $\bigcup_i^n S_i = S$.
+
+In this problem, you will first prove that $\Allocate$ is \NP-complete. Then, you will analyze an approximation algorithm for the minimization version of $\Allocate$.
+
+  \begin{parts}
+    
+    \part[6] Prove that $\Allocate \in \NP$.
+
+    \begin{solution} \end{solution}
+
+    \part[12] Prove that $\SSUM \ptimemap \Allocate$, where
+      \[ \SSUM = \set{(A, s) : A \text{ is a multiset of integers $\geq 0$, and } \exists\; I \subseteq A \text{ s.t } \sum_{a \in I} a = s}.
+    \]
+    Since $\SSUM$ is \NP-hard (from \href{https://drive.google.com/drive/folders/1XN4SWlNBsZcQb37MCxwqVcCbxRLAilgj?usp=drive_link}{Homework 8}), it follows that $\Allocate$ is also \NP-hard.
+
+    \hint{Consider adding element(s) to $A$.}
+
+    \begin{solution} \end{solution}
+]

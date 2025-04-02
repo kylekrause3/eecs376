@@ -1,0 +1,348 @@
+% ADD/REMOVE THE 'answers' OPTION TO INCLUDE/SUPPRESS SOLUTIONS
+% \documentclass[11pt,addpoints]{exam}
+\documentclass[11pt,addpoints,answers]{exam}
+
+\newcommand{\hwnum}{9}
+\newcommand{\duedate}{April 2}
+
+% In order to compile this file you will need to get 'header.tex'
+% and make the line below point to the appropriate file path
+\input{header}
+\usepackage{changepage}
+\usepackage[normalem]{ulem}
+\newcommand{\ptimemap}{\leq_p}
+
+\ifprintanswers
+\hwslnheader   % header for solutions
+\else
+\hwheader   % header for homework
+\fi
+
+\begin{document}
+\begin{questions}
+
+  \question[10] \textbf{Self assessment.} \nopagebreak
+  
+  Carefully read and understand the posted solutions to the previous homework.
+  Identify one part for which your own solution has the most room for improvement (e.g., has unsound reasoning, doesn’t show what was required, could be significantly clearer or better organized, etc.).
+  Copy or screenshot this solution, then in a few sentences, explain what was deficient and how it could be fixed.
+
+  (Alternatively, if you think one of your solutions is significantly \emph{better} than the posted one, copy it here and explain why you think it is better.)
+
+  If you didn't do last week's homework, choose a problem from it that looks challenging to you, and in a few sentences, explain the key ideas behind its solution in your own words.
+
+  \begin{solution} 
+  My solution to 6.e. on the previous homework was as follows:
+  \begin{solution}
+  If $\phi \in \TSAT$, then there exists a submultiset of $A$ whose sum of decimal digits matches $s$. Thus, $(A,s)\in \SSUM$.
+  
+  \end{solution}
+  This solution is fundamentally deficient, stemming from my approach of the problem. My solution for the other direction of the correctness condition was similarly simple, but was partially correct. I should have noted that the construction of $t_i$ and $f_i$ implies that each clause has at least one true literal, and thus is satisfied, and then constructed a boolean value to correspond to whether or not $t_i$ or $f_i$ is in $I$. This would lead to a conclusion that the first $m$ significant digits in $I$ sum to 1, 2, or 3 with just $t_i$ and $f_i$ numbers.
+  \end{solution}
+
+  \question \textbf{Approximation warm-up.}
+  \begin{parts}
+      
+      \part[2]  Suppose you have an instance of a minimization problem whose optimal value is 6.
+      Specify the range of values that a 3/2-approximation algorithm could output when run on this instance.
+
+      \begin{solution}
+      For a minimization problem with an optimal value of \(6\), a \(\frac{3}{2}\)-approximation algorithm outputs a value at most \(\frac{3}{2}\cdot6=9\). The output is in the range \([6,9]\).
+      \end{solution}
+        
+        \part [2] Suppose you have an instance of a maximization problem whose optimal value is 25.
+      Specify the range of values that a 2/5-approximation algorithm could output when run on this instance.
+
+      \begin{solution}
+      For a maximization problem with an optimal value of \(25\), a \(\frac{2}{5}\)-approximation algorithm outputs a value at least \(\frac{2}{5}\cdot25=10\). The output is in the range \([10,25]\).
+      \end{solution}
+
+  \end{parts}
+
+\pagebreak
+\question \textbf{Revisiting Times Square.}
+\newcommand{\KPATH}{\cproblem{K-PATH}}
+% Last week we accidentally defined a command of a good language to reduce from, let's do it again this time
+\newcommand{\Lhalt}{LHALT}
+
+Kate is driving her limousine through Manhattan on New Year's Eve, heading toward Times Square. Unlike her competitor Vikram (from \href{https://drive.google.com/drive/folders/1x1m30KNMTHtQIA8QOCnfUH6lxWMcFtvj?usp=drive_link}{Homework 4}), Kate doesn't care about profits—she just wants to enjoy the journey and pick up as many tour groups as possible on her way to Times Square, stopping at each intersection to wave hello.
+
+However, Kate refuses to backtrack or repeat any intersections--she insists on a simple path from her starting location to Times Square.
+
+Formally, we define the following language:
+\[
+    \KPATH = \left\{
+\begin{aligned}
+(G=(V,E),s,t,k) :~ &\text{$G$ has a simple path from $s$ to $t$ that}\\
+&\text{visits at least $k$ vertices in $V$}
+\end{aligned}
+\right\}.
+\]
+
+\begin{parts}
+    \part [8] Show that $\KPATH$ is \NP-hard.
+
+    \begin{solution}
+    Reduce from Hamiltonian-\textsc{Path}: Given an instance \((G', s', t')\) asking whether there is a Hamiltonian path from \(s'\) to \(t'\) in \(G'\), construct \(\bigl(G',\,s',\,t',\,|V'|\bigr)\). The mapping is immediate by setting \(k=|V'|\); so it clearly runs in polynomial time.
+    \begin{itemize} 
+    \item (\(\Rightarrow\)) If \(G'\) has a Hamiltonian path from \(s'\) to \(t'\), then \(G'\) has a simple path of length \(|V'|\), thus \(\bigl(G',s',t',|V'|\bigr)\in \KPATH\). 
+    \item (\(\Leftarrow\)) If \(\bigl(G',s',t',|V'|\bigr)\in \KPATH\), then there is a simple path of length \(|V'|\) from \(s'\) to \(t'\), which is a Hamiltonian path in \(G'\). 
+    \end{itemize} 
+    Hence \(\text{Hamiltonian-\textsc{Path}} \leq_p \KPATH\), proving \(\KPATH\) is \NP-hard.
+    \end{solution}
+    \pagebreak
+    \part [8] Given an efficient decider $D_\text{KP}$ for $\KPATH$, design and analyze (both correctness and runtime) an efficient algorithm that given $(G=(V,E),s,t)$, and $k^*$, the length of the longest path from $s$ to $t$, finds an actual simple path\textit{} from $s$ to $t$ that goes through $k^*$ vertices. The path should be returned as a set of edges (the edges do \textbf{not} have to be ordered). You may assume that $\set{s,t} \subseteq V$. If no such path exists, output $\emptyset$. 
+
+    \begin{solution}
+    Given a polynomial-time decider \(D_{\text{KP}}\) for \(\KPATH\) and an input \(\bigl(G=(V,E),\,s,\,t,\,k^*\bigr)\): 
+    \begin{enumerate} 
+    \item Initialize a set of edges \(H = \emptyset\). Let \(u = s\) and let \(\ell = k^*\). 
+    \item While \(\ell > 1\) and \(u \neq t\): \begin{enumerate} 
+    \item For each neighbor \(v\) of \(u\) in \(G\), temporarily remove \((u,v)\) from \(G\). Query \(D_{\text{KP}}\)\(\) on \(\bigl(G, s, t, \ell\bigr)\). 
+    \item If \(\bigl(G, s, t, \ell\bigr)\) remains a “yes” instance, keep \((u,v)\) removed. Otherwise, restore \((u,v)\) to \(G\), add \((u,v)\) to \(H\), set \(u \leftarrow v\), decrease \(\ell \leftarrow \ell - 1\), and break from the neighbor loop. 
+    \end{enumerate} 
+    \item If \(u = t\), output \(H\). Otherwise, output \(\emptyset\). 
+    \end{enumerate} 
+    Each time removing an edge preserves a “yes” answer, it is not on every valid path of length \(\ell\); each time an edge must be restored, it is part of all such paths and is added to \(H\). Continuing until either reaching \(t\) or exhausting the budget \(\ell\) yields the largest simple path through exactly \(\ell\) vertices. If no path exists, \(\emptyset\) is returned, and thus the algorithm is correct.
+    Each edge removal or restoration is checked by one call to \(D_{\text{KP}}\). Since each vertex is moved to at most once along the constructed path, the total number of queries is polynomial in \(|E|\). Thus, the overall procedure is efficient. 
+    \end{solution}
+
+\end{parts}
+
+\pagebreak
+\question [12] \textbf{Finding the colors through SAT.}
+\newcommand{\TCOLOR}{\cproblem{3-COLORING}}
+
+    Recall the languages:
+    \begin{align*}
+        \TCOLOR &= \set{G: \text{$G$ is a graph and is 3-colorable}} \\
+        \SAT &= \set{\phi: \text{$\phi$ is a satisfiable Boolean formula}}
+    \end{align*}
+    In this problem, you will show that if we have an efficient decider for $\SAT$, then we can efficiently solve the $\TCOLOR$ search problem. 
+
+    First, consider the following PTMR from $\TCOLOR$ to $\SAT$ without using the Cook-Levin Theorem.
+
+    \begin{minipage}
+    {\linewidth}
+    \centering 
+        \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+        \Require{A graph $G$}
+        \Ensure{A Boolean formula $\phi$}
+            \Function{$f$}{$G = (V, E)$}
+            \State Initialize an empty boolean formula $\phi$
+            \For{each $v_i \in V$}
+                \State $\phi \gets \phi \land (r_i \lor b_i \lor g_i) $
+            \EndFor
+            \For{each $e = (v_i, v_j) \in E$}
+                \State $\phi \gets \phi \land (\overline{r_i} \lor \overline{r_j}) \land (\overline{b_i} \lor \overline{b_j}) \land (\overline {g_i} \lor \overline {g_j})$
+            \EndFor
+            \State \Return $\phi$
+            \EndFunction
+        \end{algorithmic}
+        \end{algorithm}
+    \end{minipage}
+
+
+     By inspection, this is efficient because we are adding a constant number of clauses for every vertex and for every edge. Intuitively, the formula encodes a 3-coloring of the graph: for each vertex $v_i$, we enforce that it must be assigned at least one color (red, green, or blue), and for each edge $(v_i, v_j)$, we enforce that the endpoints cannot have the same color. If $G \in \TCOLOR$, then a valid 3-coloring gives a satisfying assignment for $\phi$, and conversely, any satisfying assignment for $\phi$ corresponds to a valid 3-coloring.
+
+    Given an efficient decider $D_\text{SAT}$ for $\SAT$, design and analyze (both correctness and runtime) an efficient algorithm that given $G = (V,E)$, finds an actual 3-coloring for $G$. The coloring should be a set of vertex-color pairs. If the graph is not 3-colorable, output $\emptyset$. 
+    \pagebreak
+    \begin{solution}
+    \begin{enumerate}
+        \item On input \(G=(V,E)\), construct \(\phi\) via the given reduction: include clauses forcing each vertex \(v_i\) to have at least one color \((r_i \lor b_i \lor g_i)\) and clauses ensuring that each edge \((v_i,v_j)\) cannot have the same color \((\overline{r_i} \lor \overline{r_j}),\,(\overline{b_i}\lor \overline{b_j}),\,(\overline{g_i}\lor \overline{g_j})\).
+        \item Run the efficient decider \(D_{\text{SAT}}\) on \(\phi\).
+        \item If \(D_{\text{SAT}}\) rejects, output \(\emptyset\). Otherwise, obtain a satisfying assignment \(\alpha\) from \(D_{\text{SAT}}\) and construct a 3-coloring:
+        \[
+          \text{Color }v_i = 
+          \begin{cases}
+            \text{red}   & \text{if }r_i\text{ is true in }\alpha,\\
+            \text{blue}  & \text{if }b_i\text{ is true in }\alpha,\\
+            \text{green} & \text{if }g_i\text{ is true in }\alpha.
+          \end{cases}
+        \]
+        \item Return the set of vertex-color pairs \(\{\, (v_i,\text{Color }v_i)\}\).
+    \end{enumerate}
+    Correctness is verificable in the fact that a valid 3-coloring of \(G\) exists if and only if \(\phi\) is satisfiable. Also, constructing \(\phi\) and decoding the assignment both require polynomial time, and calling \(D_{\text{SAT}}\) is assumed efficient. Thus, the overall algorithm runs in polynomial time.
+    \end{solution}
+      
+        
+  \pagebreak
+  \question \textbf{Approximate $f$-\SC.}
+  \nopagebreak
+
+  In this question, you will consider a variant of the $\SC$ problem where each element of the universe is in a limited number of subsets.
+  Formally, in the $f$-\SC problem, we are given a ``universe'' (set)~$U$ and subsets $S_1, \ldots, S_n \subseteq U$ \emph{where each universe element appears in at most~$f$ of the subsets}.
+  The goal is to find a \emph{smallest} number of the subsets that ``covers''~$U$, i.e., an $I \subseteq \set{1,\ldots,n}$ such that $\bigcup_{i \in I} S_{i} = U$.
+  We assume that $\bigcup_{i=1}^{n} S_{i} = U$, otherwise no solution exists.
+
+  You will analyze an ``$f$-cover'' approximation algorithm for the $f$-$\SC$ problem.
+  The algorithm is a generalization of the ``double cover'' algorithm for $\VC$ from lecture, and it works essentially as follows: while there is some uncovered element~$u$ in the universe, add to the cover \emph{all} the subsets that have~$u$ in them.
+  The formal pseudocode is as follows.
+  The notation $I(u) = \set{i : u \in S_i}$ for $u \in U$, that is, $I(u)$ indicates which subsets have~$u$.
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Function{$f$-cover}{$U, S_1, \ldots, S_n$}
+      \State $I = C = \emptyset$
+      \Comment{selected indices $I$, covered elements $C$}
+      \While{$C \neq U$}
+      \Comment{not all elements are covered}
+      \State choose an arbitrary $u \in U \setminus C$
+      \label{fcov:pickuncovered}
+      \Comment{element $u$ is not yet covered}
+      \State $I = I \cup I(u)$, $C = C \cup \bigcup_{i \in I(u)} S_{i}$
+      \Comment{add \emph{all} subsets $S_{i}$ having $u$ to the cover}
+      \EndWhile
+      \State \Return $I$
+      \EndFunction
+    \end{algorithmic}
+  \end{algorithm}
+  \end{minipage}
+    
+  Fix some arbitrary $f$-\SC instance, and let~$I^*$ denote an optimal set cover for it.
+  Let~$E$ denote the set of elements~$u$ chosen in Step~\ref{fcov:pickuncovered} during an execution of the algorithm, and let~$I$ denote the algorithm's final output.
+
+  \begin{parts}
+    \part[5] Prove that $I(u) \cap I(u') = \emptyset$ for every distinct $u, u' \in E$.
+    In other words, prove that if $u$ and $u'$ are each selected as the uncovered element in different iterations, then no~$S_i$ has both~$u$ and~$u'$.
+        
+    \begin{solution}
+    If some \(S_i\) contained distinct \(u,u'\in E\), then after adding \(S_i\) to cover \(u\), it would cover \(u'\) as well, so \(u'\) would never be chosen later. Thus, \(I(u)\cap I(u')=\emptyset\).
+    \end{solution}
+
+    \part[5] We want a lower bound on $\OPT = |I^*|$.
+    Using the previous part, prove that $|E| \leq |I^*|$.
+    
+    \begin{solution}
+    Each \(u\in E\) must be covered by some set in \(I^*\), and no single set can cover two elements from \(E\). Thus, \(\abs{E}\le\abs{I^*}\).
+    \end{solution}
+
+    \part[4] We want an upper bound on $\ALG = |I|$.
+    Prove that $|I| \leq f \cdot |E|$, and conclude that the $f$-cover algorithm is an $f$-approximation algorithm for the $f$-\SC problem.
+        
+    \begin{solution}
+    Each chosen \(u\in E\) is in at most \(f\) subsets, so each iteration adds at most \(f\) sets to \(I\). Thus \(\abs{I}\le f\,\abs{E}\). Combining with \(\abs{E}\le\abs{I^*}\) gives \(\abs{I}\le f\,\abs{I^*}\). Thus, the $f$-cover algorithm is an $f$-approximation algorithm for the $f$-\SC problem.
+    \end{solution}
+
+    \pagebreak
+    \part[6] Prove that for every positive integer~$f$, there is an input for which the $f$-cover algorithm necessarily outputs a cover that is $f$ times as large as an optimal one.
+    
+    \begin{solution}
+    For each \(f\), construct an instance with \(n\) elements \(e_1,\dots,e_n\). Partition the subsets into \(n\) disjoint groups of \(f\) each, where each group covers only one distinct element. Each element appears in exactly \(f\) subsets. The algorithm picks all \(f\) subsets for every newly uncovered element, while an optimal cover picks exactly one subset per element. The algorithm picks a total of \(fn\) subsets, while the optimal cover picks a total of \(n\). Thus, the algorithm's cover can be $f$ times as large as an optimal one.
+    \end{solution}
+  \end{parts}
+
+\pagebreak
+  \question \textbf{Allocating cashiers.} 
+
+    You have been appointed as the manager of Meijer, and are responsible for overseeing the team of cashiers. It is closing time, but a number of customers are waiting with full carts. 
+
+    Your cashiers are tired and ready to go home, so you want to minimize the number of items each cashier needs to scan to get through all of the customers. 
+    
+    We formalize this as the problem of least-item checkout.
+    The input is a number of cashiers~$n$ and the number of items $c_{1}, \ldots, c_{m}$ that each of the~$m$ customers have, i.e., $c_{i}$ is the number of items that a cashier would need to scan for customer $i$ to check out.
+    The desired output is an allocation of the customers to the cashiers that minimizes the workload.
+    The workload of an allocation is the maximum, over all the cashiers, of the number of items scanned by a single cashier.
+    Each customer must be served by a single cashier, and cashiers process their customers sequentially without breaks.
+    
+\newcommand{\Allocate}{\cproblem{ALLOCATE}}
+Formally, this can be defined as:
+\[
+    \Allocate = \left\{
+    \begin{aligned}
+    (n, C=\set{c_1\ldots c_m}, k) :~ &\text{$C$ can be partitioned into $n$ subsets}\\
+    &\text{where each subset sums to at most $k$}
+    \end{aligned}
+    \right\}.
+\]
+Note: A \emph{partition} of a set $S$ is a collection of subsets $\set{S_1, \ldots, S_n}$ such that $S_i \cap S_j = \emptyset$ for all $i \neq j$ and $\bigcup_i^n S_i = S$.
+
+In this problem, you will first prove that $\Allocate$ is \NP-complete. Then, you will analyze an approximation algorithm for the minimization version of $\Allocate$.
+
+  \begin{parts}
+    
+    \part[6] Prove that $\Allocate \in \NP$.
+
+    \begin{solution} 
+    A witness consists of a partition of \(C\) into \(n\) subsets such that each subset sums to at most \(k\). Checking that the subsets cover \(C\), have no overlap, and each sum is at most \(k\) can be done in polynomial time. Thus \(\Allocate \in \NP\).
+    \end{solution}
+
+    \pagebreak
+    \part[12] Prove that $\SSUM \ptimemap \Allocate$, where
+      \[ \SSUM = \set{(A, s) : A \text{ is a multiset of integers $\geq 0$, and } \exists\; I \subseteq A \text{ s.t } \sum_{a \in I} a = s}.
+    \]
+    Since $\SSUM$ is \NP-hard (from \href{https://drive.google.com/drive/folders/1XN4SWlNBsZcQb37MCxwqVcCbxRLAilgj?usp=drive_link}{Homework 8}), it follows that $\Allocate$ is also \NP-hard.
+
+    \hint{Consider adding element(s) to $A$.}
+
+    \begin{solution}
+    Given \((A,s)\in \SSUM\), construct \(\bigl(n,C,k\bigr)\) for \(\Allocate\) by letting \(n=2\), \(k=s\), and \(C=A\cup\{x\}\), where
+    \[
+    x \;=\; \max\{\,0,\;2s - \sum(A)\}\,.
+    \]
+    Forming \(C\) (by adding at most one new element) is polynomial in the size of \((A,s)\).
+    \begin{itemize}
+      \item (\(\Rightarrow\)) If there is a subset \(I \subseteq A\) summing to \(s\), then put \(I\) in one cashier's subset and the rest of \(A\cup\{x\}\) in the other. Since \(\sum(A)-s + x = 2s-s + x = s\) whenever \(x=2s-\sum(A)\), both subsets have sums at most \(s\). If \(2s < \sum(A)\), \(x=0\) and no valid partition exists unless \(\sum(A)\le 2s\), which matches the original instance being “no.” 
+      \item (\(\Leftarrow\)) If \((n,C,k)\) is a “yes” instance of \(\Allocate\), then at most one subset can contain \(x\). A subset of \(A\) must sum to \(s\) to fill exactly \(k\) when combined with \(x\), or else the other subset would exceed \(k\). So, there is a subset of \(A\) with sum \(s\), implying \((A,s)\) is a “yes” instance of \(\SSUM.\)
+    \end{itemize}
+    Thus, \(\SSUM \ptimemap \Allocate\), so \(\Allocate\) is \NP-hard.
+    \end{solution}
+
+  
+  \begin{adjustwidth}{-1.5em}{}
+  While this is an $\NP$-complete problem, there is a polynomial-time (greedy) approximation algorithm:
+  
+  \begin{minipage}{\linewidth}
+    \begin{algorithm}[H]
+      \begin{algorithmic}[1]
+        \Function{GreedyAllocate}{$n, c_{1}, \ldots, c_{m}$}
+        \While{there is an unallocated customer}
+        \State{allocate an arbitrary unallocated customer to a cashier who is allocated the fewest items}
+        \EndWhile
+        \State{\Return{the computed allocation}}
+        \EndFunction
+      \end{algorithmic}
+    \end{algorithm}
+  \end{minipage}
+ 
+  You will analyze this algorithm in the next few parts.
+  \end{adjustwidth}
+
+
+    \part[4] 
+    Letting $\OPT$ be the optimal workload, prove that $\OPT \geq \max \set{c_1, c_2, \ldots, c_m}$.
+    That is, the optimal workload is at least the largest number of items bought by a single customer.
+    
+    \begin{solution}
+    Since every customer must be allocated to a single cashier, the workload of any allocation is at least the size of the largest set of items held by any single customer. Thus, \(\OPT \ge \max \{\,c_1, \dots, c_m\}\).
+    \end{solution}
+
+    \pagebreak
+    \part[5] Prove that if $m \leq n$, \algo{GreedyAllocate} necessarily returns an optimal allocation.
+    
+    \begin{solution}
+    If \(m \le n\), allocate each of the \(m\) customers to a distinct cashier. Each cashier scans at most \(\max \{\,c_1,\dots,c_m\}\) items, which matches the lower bound from part (c). This allocation is necessarily optimal, and the greedy algorithm returns it by placing each customer on a new cashier.
+    \end{solution}
+    
+    \part[5] Prove that $\OPT \geq \frac{1}{n} \cdot \sum_{j=1}^{m} c_j$.
+    That is, the optimal workload is at least the \emph{average} number of items scanned by the cashiers.
+
+    \begin{solution}
+    Any allocation that handles all items among \(n\) cashiers must have at least one cashier scanning at least \(\frac{1}{n}\sum_{j=1}^{m} c_j\) items. Thus, \(\OPT \ge \frac{1}{n}\sum_{j=1}^{m} c_j.\)
+    \end{solution}
+
+    \part[6] 
+    Prove that $\ALG \leq 2\cdot \OPT$, where $\ALG$ is the workload obtained by \algo{GreedyAllocate}.
+        
+    \hint{Consider a cashier that scans the most items (i.e., their number is equal to the workload), and how the customers were allocated before this cashier's final customer was allocated to them.}
+
+    \begin{solution}
+    Let \(\ALG\) be the workload of the final allocation from \algo{GreedyAllocate} and let \(i\) be the last customer assigned to the cashier with workload \(\ALG\). Just before adding \(i\), that cashier’s total was at most the fewest among all cashiers, so it was at most \(\OPT\). Also \(c_i \le \OPT\), since \(\OPT\) is at least every customer’s items. So, \(\ALG \le \OPT + \OPT = 2\,\OPT.\)
+    \end{solution}
+  
+  \end{parts}
+
+\end{questions}
+
+\end{document}
