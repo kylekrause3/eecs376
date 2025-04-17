@@ -1,0 +1,120 @@
+This is for a rigorous computer science foundations class. For the following latex code, find the solution and give the solution in a copy-pastable latex format. I am looking for the clear, concise, and correct solution to this foundational computer science theory problem, priotitizing simplistic explanation and logical thoroughness. Do not include any explanations, your answer should look like a realistic response from a perfect student. I do not want any sorts of titles or re-stating of the problem, I just want the raw solution. Try not to use pronouns like "I" or "we", opting to replace language like "we disprove" to just "disprove" and "we construct" to "construct". Make sure your response is in its own black box copy-pastable latex environment box.
+
+
+!!!!!!!!Here is a previous solution to another problem from a different homework. Use this as a style guide for your response. 
+\begin{solution} 
+\(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+\begin{enumerate}
+    \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+    \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+\end{enumerate}
+Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+\end{solution}
+
+\begin{solution} 
+Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+\[
+\text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+\]
+Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+\end{solution}
+
+\begin{solution}
+  Disprove; define
+  \[
+  L \;=\; \{\,\varphi \mid \varphi\in \text{3SAT}\}\;\cup\;\{\,\langle M\rangle \mid M\text{ halts on the empty input}\}.
+  \]
+  \textbf{1. Reduction:} Given an instance \(\varphi\) of 3SAT, let \(f(\varphi)=\varphi\).\\
+  \textbf{2. Polynomial Time:} This is the identity function; polynomial time.\\
+  \textbf{3. Correctness:} 
+  \begin{itemize}
+  \item (\(\Rightarrow\)) If \(\varphi\) is satisfiable, then \(\varphi \in L\), so \(f(\varphi)\in L\).
+  \item (\(\Leftarrow\)) If \(f(\varphi)=\varphi\in L\), then \(\varphi\) must be a satisfiable 3SAT instance. 
+  \end{itemize}
+  Hence 3SAT \(\leq_p\) \(L\), so \(L\) is \NP-hard. However, deciding \(L\) requires solving the Halting Problem, so \(L\) is not decidable. Therefore, not all \NP-hard languages are decidable.
+\end{solution}
+!!!!!!!!ie. do not include any explanations, just the solution, in a similar format to the above, without any crazy latex techniques.
+
+
+
+!!!!!!!!Here is the question for you to provide latex output solution for: 
+\question \textbf{Randomized vertex cover.}
+
+In this problem, we will consider randomized algorithms for approximating vertex-cover problems. Recall that the ``double cover'' algorithm \emph{deterministically} gives a 2-approximation to the minimum vertex cover problem, but in this problem you will show that a randomized approach is more versatile.
+    
+  \begin{parts}
+  \part [6] Consider a probability experiment with set $S$ with $k$ distinct items. In each round: 
+  \begin{itemize}
+      \item With probability \textbf{at least} $p$ (where $p \in (0,1]$), one \emph{new} item (not previously chosen) is selected. 
+      \item Otherwise, no item is selected on that round. 
+      \item The experiment ends when all $k$ items are selected. 
+  \end{itemize}
+
+  Let $R$ be a random variable denoting the number of rounds until the experiment ends. Prove that
+  \[
+    \Ex[R] \leq \frac{k}{p} 
+  \]
+
+  \hint{For $i = 1, \ldots, k$, let $R_i$ be the random variable representing the number of rounds needed to select the $i$-th item \emph{after} $i-1$ items have already be chosen. You may also want to review \href{https://en.wikipedia.org/wiki/Geometric_distribution}{geometric distribution}.} \label{Rand-VC-Exp}
+
+    \begin{solution} \end{solution}
+
+  \part [12] Consider the following algorithm 
+
+    \begin{minipage}{\linewidth}
+      \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+          \Function{RandomSingleCover}{$G = (V,E)$}
+          \State{$C \gets \emptyset$}
+          \While{there is some edge $e = (u,v)$ that is not covered by~$C$}
+          \State{Add exactly one of $u$ or $v$ to $C$, each with probability $1/2$}
+          \EndWhile
+          \State{\Return{$C$}}
+          \EndFunction
+        \end{algorithmic}    
+      \end{algorithm}
+    \end{minipage}
+    
+  Prove that \textsc{RandomSingleCover} outputs a 2-approximation, in expectation, for the minimum vertex cover problem. In other words, show that
+  \[
+    \Ex[|C|] \leq 2 \cdot |C^*|
+  \]
+  where $C^* = \set{v_{1}, \ldots, v_{k}}$ is some minimum vertex cover in the input graph.
+
+    \hint{In each iteration, if the algorithm processes edge $e = (u,v)$, at least one of $u$ or $v$ must be in $C^*$ (briefly explain why in your solution). First, relate the algorithm's iterations to rounds in the probability experiment in \cref{Rand-VC-Exp}. Then, show that the algorithm halts \emph{no later} than when the experiment ends.} \label{Rand-VC-Single}
+    
+    \begin{solution} \end{solution}
+    
+  \part [9] Now, consider the \emph{minimum-weight} vertex cover problem: given a graph~$G$ equipped with \emph{positive vertex weights}, to find a vertex cover of minimum total weight.
+
+    % Formally, an instance of the problem is $G = (V,E,w)$ where $w \colon V \to \mathbb{R}^+$ assigns a non-negative weight to each vertex, and the goal is to find a vertex cover $S \subseteq V$ for which $w(S) = \sum_{v \in S} w(v)$ is minimized.
+
+    For each of the following algorithms, show that it can yield an \emph{arbitrarily large} approximation ratio for this problem, by describing an explicit graph and showing how the (expected) weight of the algorithm's output cover can be very large relative to the optimal weight.
+    \begin{enumerate}[(i)]
+    \item The double-cover algorithm from lecture.
+    \item The \textsc{RandomSingleCover} algorithm from \cref{Rand-VC-Single}.
+    \item The following greedy algorithm:
+      
+      \begin{minipage}{\linewidth}
+        \begin{algorithm}[H]
+          \begin{algorithmic}[1]
+            \Function{Greedy}{$G = (V,E,w)$}          
+            \State{$S \gets \emptyset$}
+            \While{$G$ has an edge}
+            \State{Remove all isolated vertices of $G$}
+            \State{Add a lowest-weight vertex in $G$ to $S$ and remove all its incident edges}
+            \EndWhile
+            \State{\Return{$S$}}
+            \EndFunction
+          \end{algorithmic}
+        \end{algorithm}
+      \end{minipage}
+    \end{enumerate}
+    
+    \begin{solution} \end{solution}
+
+
+
+
+
+!!!!!!!!I need the verbaitm raw latex output for this question.
