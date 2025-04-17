@@ -1,0 +1,632 @@
+% ADD/REMOVE THE 'answers' OPTION TO INCLUDE/SUPPRESS SOLUTIONS
+% \documentclass[11pt,addpoints]{exam}
+\documentclass[11pt,addpoints,answers]{exam}
+
+\newcommand{\hwnum}{11}
+\newcommand{\duedate}{April 16}
+
+% In order to compile this file you will need to get 'header.tex'
+% and make the line below point to the appropriate file path
+\input{header}
+\usepackage{changepage}
+
+\ifprintanswers
+\hwslnheader   % header for solutions
+\else
+\hwheader   % header for homework
+\fi
+
+\begin{document}
+
+\begin{questions}
+
+  \question[10] \textbf{Self assessment.} \nopagebreak
+  
+  Carefully read and understand the posted solutions to the previous homework.
+  Identify one part for which your own solution has the most room for improvement (e.g., has unsound reasoning, doesn’t show what was required, could be significantly clearer or better organized, etc.).
+  Copy or screenshot this solution, then in a few sentences, explain what was deficient and how it could be fixed.
+
+  (Alternatively, if you think one of your solutions is significantly \emph{better} than the posted one, copy it here and explain why you think it is better.)
+
+  If you didn't do last week's homework, choose a problem from it that looks challenging to you, and in a few sentences, explain the key ideas behind its solution in your own words.
+
+  \begin{solution} 
+  My solutions for 5.b and 5.c were as follows:
+
+  \begin{solution}
+  Given \( S \) and an element \( a \in S \), compute
+  \[
+  r = |\{ x \in S : x < a \}| + 1.
+  \]
+  Then \( a \) is a near median if and only if
+  \[
+  \frac{2n}{5}+1 \le r \le \frac{3n}{5}.
+  \]
+  This process takes \( O(n) \) time.
+  \end{solution}
+  \begin{solution}
+  Repeat the following process 21 times: \\
+  \textlangle omitted for brevity\textrangle \\
+  If no near median is found after 21 iterations, compute the median of \( S \) using a deterministic linear-time selection algorithm and output it.
+
+  The probability of not finding a near median in one iteration is at most \( 4/5 \). Thus, the probability of not finding a near median in 21 iterations is at most
+  \[
+  \left(\frac{4}{5}\right)^{21} \le \frac{1}{100}.
+  \]
+  The expected running time of the algorithm is \( O(n) \) because each iteration takes \( O(n) \) time, and the expected number of iterations is constant.
+  \end{solution}
+  
+  Both of these solutions are correct, however, I did not include a correctness proof for either of them. 5.b. requires a correctness proof for it's algorithm, and 5.c. requires a correctness proof for the 99\% success probability requested by the question.
+  \end{solution}
+
+  \pagebreak
+
+\question \textbf{Short-answer potpourri.}
+ 
+  \begin{parts}
+    \part[4] Suppose that Alice's bit string is $x=101111000$ and Bob's bit string is $y=111100110$.
+    State, with justification, \textbf{all} the ``bad'' primes~$p$ for which the fingerprinting protocol from class will (wrongly) \emph{accept}, even though $x \neq y$.
+    
+    \hint{Recall that~$x$ and $y$ are interpreted as integers written in base two, with digits written from most to least significant.}
+   
+    \begin{solution}
+    \[
+    x = 101111000_2 = 376,\quad y = 111100110_2 = 486.
+    \]
+    \[
+    x - y = -110 = -(2\cdot5\cdot11).
+    \]
+    Bad primes divide \(x-y\),  
+    \[
+    p \in \{2,5,11\}.
+    \]
+    For each \(p\),  
+    \[
+    x \equiv y \pmod p.
+    \]
+    \end{solution}
+    
+    \part[4] Recall the fast ``spot checking'' algorithm for verifying matrix multiplication from lecture.
+    Consider the matrices
+    \[
+      A =
+      \begin{bmatrix}
+        1 & 2 & 3 \\
+        3 & 2 & 1 \\
+        2 & 1 & 3
+      \end{bmatrix}, \quad
+      B =
+      \begin{bmatrix}
+        3 & 2 & 4 \\
+        1 & 3 & 3 \\
+        2 & 5 & 1
+      \end{bmatrix}, \quad
+      A\cdot B = 
+      \begin{bmatrix}
+        11 & 23 & 13 \\
+        13 & 17 & 19 \\
+        13 & 22 & 14
+      \end{bmatrix}, \quad
+      C = 
+      \begin{bmatrix}
+        13 & 21 & 18 \\
+        13 & 17 & 19 \\
+        14 & 21 & 10
+      \end{bmatrix},
+    \]
+    and notice that $AB \neq C$.
+    Give, with justification, \textbf{all} the binary vectors for which the algorithm (wrongly) accepts. 
+    
+    \begin{solution}
+    \(A(Br) \stackrel{?}{=} Cr\):
+    \[
+    \begin{aligned}
+    11r_1 + 23r_2 + 13r_3 &= 13r_1 + 21r_2 + 18r_3,\\
+    13r_1 + 17r_2 + 19r_3 &= 13r_1 + 17r_2 + 19r_3,\\
+    13r_1 + 22r_2 + 14r_3 &= 14r_1 + 21r_2 + 10r_3.
+    \end{aligned}
+    \]
+    So,
+    \[
+    \begin{aligned}
+    -2r_1+2r_2-5r_3&=0, \\
+    0&=0, \\
+    -r_1+r_2+4r_3&=0.
+    \end{aligned}
+    \]
+    Thus,
+    \[
+    r_1 = r_2 + 4r_3.
+    \]
+    In order for this to remain true, because we are limited to \{0, 1\}, we must have \(r_3=0\) and thus \(r_1=r_2 + 0 = r_2\).
+    So, binary vectors for which the algorithm wrongly accepts are:
+    \[
+    r=\begin{pmatrix}0\\0\\0\end{pmatrix},\quad
+    r=\begin{pmatrix}1\\1\\0\end{pmatrix}.
+    \]
+    \end{solution}
+      
+
+    \part [5] Three weeks ago, Anonymous Beaker posted a long, unexplained string of decimal digits on Piazza. You didn’t think much of it at the time, but something about it stuck with you.
+    
+    Now that you’ve learned about cryptography, it clicks: this must be a message, hidden in plain sight. A follow-up reply hints that the message format as follows:
+    \begin{itemize}
+        \item The digits represent \href{https://www.rapidtables.com/code/text/ascii-table.html}{ASCII codes} written in pairs of decimal digits (e.g., $\texttt{65} \to \text{A}$, $\texttt{38} \to \&$, $\texttt{87} \to \text{W}$, etc.).
+        \item The message is encrypted using a Caesar cipher, but it’s applied to each \emph{individual digit}, not the ASCII characters or pairs. (e.g., with key $k=5$, ``A\&W" (\texttt{65} \texttt{38} \texttt{87}) becomes 108332). 
+    \end{itemize}
+    The ciphertext is:
+    \[ 400644095036345936514356093209515259423656091750325118
+    \]
+    Recover the original message. You may use a computer or the \href{https://onlinestringtools.com/convert-ascii-to-string}{ASCII code to string converter}. Include an explanation of what you did and clearly state the secret key.
+
+    \hint{First determine all the possible secret keys. Then, perform a brute-force attack.}
+
+    \begin{solution}
+    Possible keys are \(k\in\{0,\dots,9\}\). 
+    
+    For each possible key $k$: 
+    
+    \quad For each number in the ciphertext, compute new digit \(d_i=(c_i-k)\bmod 10\). Then, group the digits into pairs, and convert each pair to its ASCII character representation. 
+    
+    Key \(7\) yields:
+    \[
+    \text{I'M SECRETLY A TURKEY (SAT)}.
+    \]
+    or,
+    \[
+    \text{73 39 77 32 83 69 67 82 69 84 76 89 32 65 32 84 85 82 75 69 89 32 40 83 65 84 41}
+    \]
+    \end{solution}
+
+    \pagebreak
+    \part[5] Recall the following extended Euclidean algorithm from \href{https://drive.google.com/drive/folders/1J0PfYCu6gjDfL5v5BsIy36di4on-2gll?usp=drive_link}{Homework 1}.
+
+    \begin{minipage}{\linewidth}
+      \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+          \Require{integers $x \geq y\geq 0$, not both zero}
+          \Ensure{a triple $(g,a,b)$ of integers where $g=\gcd(x,y)$ and
+            $ax+by=g$}
+          \Function{ExtendedEuclid}{$x,y$}
+          \If{$y = 0$} \State \Return $(x,1,0)$
+          \Comment{Base case: $1x + 0y = \gcd(x,y) = x$}
+          \Else \State Write $x = qy + r$ for an integer $q$, where $0\leq r < y$
+          \State $(g,a',b') \gets \Call{ExtendedEuclid}{y,r}$
+          \State $a \gets b'$
+          \State $b \gets a' - b'q$
+          \State \Return $(g, a, b)$
+          \EndIf
+          \EndFunction
+        \end{algorithmic}
+      \end{algorithm}
+    \end{minipage}
+
+    Show that if $\gcd(x,y) = 1$ (in other words, $x$ and $y$ are coprime), then $ax \equiv 1 \pmod y$ and $by \equiv 1 \pmod x$. Then, calculate $32^{-1} \bmod 263$ and $263^{-1} \bmod {32}$ using \textsc{ExtendedEuclid}. Show you work by filling in the table below:
+
+      \begin{table}[H]\centering
+        \begin{tabular}{rr|rr|rr|rr}
+          \multicolumn{2}{c|}{input} & \multicolumn{2}{|c|}{division} & \multicolumn{2}{|c|}{rec ans} & \multicolumn{2}{|c}{output} \\
+           $x$   & $y$  & $q$ & $r$  & $a'$ & $b'$ & $a$ & $b$  \\ \hline
+           263 & 32 & 8 & 7 & 2  & $-9$ & $-9$ & 74 \\
+           32  & 7  & 4 & 4 & $-1$ & 2   & 2     & $-9$ \\
+           7   & 4  & 1 & 3 & 1   & $-1$ & $-1$  & 2  \\
+           4   & 3  & 1 & 1 & 0   & 1   & 1     & $-1$ \\
+           3   & 1  & 3 & 0 & 1   & 0   & 0     & 1  \\
+           1   & 0  &   &   &     &     & 1     & 0  
+          % Add more rows as needed
+        \end{tabular}
+      \end{table}
+
+    
+      \begin{solution}
+      If \(\gcd(x,y) = 1\), then \(ax+by=1\) for some integers \(a\) and \(b\).
+      \[
+      ax+by\equiv1\pmod y\implies ax\equiv1\pmod y,
+      \]
+      \[
+      ax+by\equiv1\pmod x\implies by\equiv1\pmod x.
+      \]
+      \[
+      32^{-1}\bmod263 = 74,
+      \qquad
+      263^{-1}\bmod32 = -9 \equiv 23 \pmod{32}.
+      \]
+      \end{solution}
+        
+      \pagebreak
+    \part [5] Recall the following (iterative version of) fast modular exponentiation (repeated squaring) algorithm from \href{https://drive.google.com/drive/folders/1ZbVrwbTVZgsUXG7_g2wFAOBHW4Gd1XS6?usp=drive_link}{Homework 3}.
+
+    \begin{minipage}{\linewidth}
+    \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+        \Require{positive integers $a$, $b$, and modulo $m \geq 2$}
+        \Ensure{$a^b \bmod m$}
+        \Function{RepeatSquare}{$a$, $b$, $m$}
+            \State $r \gets \ceil{\log_2 b}$
+            \State $P \gets $ Initialize an empty table of size $r$ \Comment{To store $P[i] = a^{2^{i}} \bmod m$}
+            \State $P[0] \gets a \bmod m$
+            \For {$i = 1, \ldots, r-1$}
+                \State $P[i] \gets (P[i-1] \cdot P[i-1]) \bmod m$
+            \EndFor
+            \State $E \gets 1$
+            \For {$i = 0, \ldots, r-1$}
+                \If {$\floor{b/2^i}$ is odd} \Comment{The $i$-th bit of $b$ in binary is $1$}
+                    \State $E \gets (E \cdot P[i]) \bmod m$
+                \EndIf
+            \EndFor
+            \State \Return $E$
+        \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+    \end{minipage}
+
+    Compute $6^{25} \bmod 22$ using \textsc{RepeatSquare}. Show your work by first filling out the table~$P$ below (using lines 3-6). Then, list all the $P[i]$'s that you included in your product to calculate $6^{25} \bmod 22$ (using lines 8-10) in your calculation leading to the final answer. 
+    
+      \begin{table}[H]\centering
+      \begin{tabular}{c|c|l}
+      $i$ & $2^i$ & $P[i]$ \\
+      \hline
+        0 & 1  & 6  \\
+        1 & 2  & 14 \\
+        2 & 4  & 20 \\
+        3 & 8  & 4  \\
+        4 & 16 & 16 \\
+      \end{tabular}
+      \end{table}
+
+      \begin{solution} 
+      $25=11001_2$; thus include $P[0],\,P[3],\,P[4]$.
+      \[
+      6^{25}\bmod22 \;=\; (P[0]\cdot P[3]\cdot P[4]) \bmod 22
+      \;=\;(6\cdot 4\cdot 16)\bmod22
+      \;=\;10.
+      \]
+      \end{solution}
+    
+  \end{parts}
+  
+  \pagebreak
+  \question \textbf{Trading space for time in skip lists.} 
+  \nopagebreak
+
+  Recall that a skip list is essentially a linked list with multiple levels.
+  To add an item, we first find the appropriate place to insert it in the first level, and do so.
+  Then, we run the following loop: flip a fair coin; if it comes up heads, insert the item at the next-higher level and repeat; if it comes up tails, stop.
+
+  A skip list keeps duplicate copies of items, which consumes extra memory.
+  In this problem, we will obtain a trade-off between the amount of memory used and the running time of the `find' operation, by adjusting the probability with which we ``promote'' items to higher levels.
+  That is, instead of using a fair coin, we use one that comes up heads with some probability $p \in (0,1)$.
+
+  Throughout this problem, assume that there are~$n$ distinct items in the data structure.
+  
+  \begin{parts}
+    \part[4] For any particular item in the data structure, derive the expected number of copies of it that appear in the structure, in terms of~$p$.
+
+    \begin{solution}
+    \[
+    \sum_{k=0}^{\infty}p^k = \frac{1}{1-p}.
+    \]
+    $p^k$ is the probability of the item appearing at level $k$. The expected number of copies of an item is the sum of the probabilities of the item appearing at each level, starting with 1 (100\%) for the base level.
+    \end{solution}
+
+    \part[4] Derive the expected size of the structure, i.e., the total number of copies of all the items, in terms of~$n$ and~$p$.
+    Also briefly describe how this behaves as~$p$ decreases and approaches~$0$.
+
+    \begin{solution}
+    \[
+    E[\text{size}] = n \sum_{k=0}^{\infty}p^k = \frac{n}{1-p}.
+    \]
+    Thus, as \(p\to0\), \(E[\text{size}]\to n\).
+    \end{solution}
+
+    \part[5] Derive the expected number of items on level~$i$ (where $i=0$ corresponds to the first level), in terms of~$n$, $p$, and $i$.
+
+    \hint{Determine the probability that a particular item appears on level~$i$.}
+
+    \begin{solution}
+    \[
+    E[\#\text{items on level }i] = n\,p^i.
+    \]
+    \end{solution}
+    \pagebreak
+
+    \part[7] Let $Z$ be random variable denoting the total number of occupied levels in the structure. Show that
+    \[
+        \Ex[Z] \leq \frac{1}{1-p} + \frac{\log n}{\log (1/p)}.
+    \]    
+    Also briefly describe how this bound behaves as~$p$ decreases and approaches~$0$.
+
+    \hint{Define an indicator random variable that indicates whether level~$i$ has \emph{at least one} item, and use the previous part to analyze its expectation.}
+    
+    \begin{solution}
+    \[
+    \Ex[Z]
+    = \sum_{i=0}^\infty \Pr[\text{level }i\text{ occupied}]
+    = \sum_{i=0}^\infty \bigl(1 - (1 - p^i)^n\bigr)
+    \]
+    $1 - p^i$ is the probability that a particular item is NOT in level $i$. So, $(1 - p^i)^n$ is the probability that \underline{any} item is NOT in level $i$, or, the probability that level $i$ is unoccupied. Thus, $1 - (1 - p^i)^n$ is the probability that level $i$ is occupied. Summing this for all levels gives the expected number of occupied levels.
+    \[
+    \sum_{i=0}^\infty \bigl(1 - (1 - p^i)^n\bigr)
+    \le \sum_{i=0}^{\lfloor\frac{\ln n}{\ln(1/p)}\rfloor}1
+    + \sum_{i=\lfloor\frac{\ln n}{\ln(1/p)}\rfloor+1}^\infty n\,p^i
+    \le \frac{\ln n}{\ln(1/p)} \;+\; \frac{1}{1-p}.
+    \]
+    As \(p\to 0\), \(\frac{\ln n}{\ln(1/p)}\to 0\) and \(\frac{1}{1-p}\to 1\).
+    \end{solution}
+    
+    \part[7] Consider any particular level~$i$ and an item~$y$ that appears in that level.
+    Derive a fairly tight upper bound (in terms of any of the relevant quantities) on the expected number of items preceding~$y$ \textbf{on level~$i$} that are accessed when running $\textsc{find}(y)$.
+    Also briefly describe how this bound behaves as~$p$ decreases and approaches~$0$.
+
+    \hint{For each item on level~$i$ that precedes~$y$, define and analyze an indicator random variable for whether that item is accessed.}
+    
+    \begin{solution}
+    Let the search on level \(i\) arrive at the unique node \(x\) whose key is the largest key strictly less than \(y\). This node is either the leftmost sentinel or came from the level \(i+1\).
+    The algorithm repeatedly follows the “next'' pointer on level \(i\) until \(y\) is reached.
+    
+    Each of the items that lie between \(x\) and \(y\) must already be present on level \(i-1\). Every item on level \(i\) was promoted independently with probability \(p\). Therefore, reading left-to-right, the index \(j\) (distance from $x$) of the \emph{first} item in this block whose promotion succeeds is distributed with
+    \[
+        \Pr[j]=p(1-p)^{j-1}\qquad(j\ge 1),
+    \]
+    
+    The algorithm visits exactly the first \(J\) items in that block on
+    level \(i\) (the predecessors of \(y\) and \(y\) itself), so
+    \[
+        \Ex[J]=\sum_{j=1}^{\infty}jp(1-p)^{j-1}=\frac{1}{p}.
+    \]
+    So, the expected number of level-\(i\) predecessors of \(y\) examined by \(\textsc{find}(y)\) is at most \(1/p\).
+    As \(p\to 0\), this bound grows like \(1/p\) and then diverges.
+    \end{solution}
+  \end{parts}
+
+    \question \textbf{Spot-checking polynomials.}
+  \nopagebreak
+
+  Suppose we are given two polynomials, each presented using the variable~$x$, constants, additions, multiplications, and powers.
+  For example, one polynomial might be presented as $p_1(x) = ((x - 1)^2 + 2)^2$, and the other as $p_2(x) = (x-1)^4 + 4x(x-2) + 8$.
+  Observe that these two polynomials are \emph{identical}, i.e., $p_1(x^*)=p_2(x^*)$ for \emph{all}~$x^*$.
+  Equivalently, $p(x) = p_1(x) - p_2(x)$ is the \emph{zero} polynomial: $p(x^*)=0$ for all~$x^*$.
+  
+  As another example, $q_1(x) = (x+1)^2$ and $q_2(x) = x^2 + 1^2$ are \emph{not} identical: $q_1(x)-q_2(x) = 2x$, which is not the zero polynomial.
+
+  This suggests the natural ``zero-testing'' problem, of determining whether a given polynomial is the zero polynomial.
+  This problem has many applications, like verifying polynomial multiplication---along with some graph problems that appear to have nothing to do with polynomials at all!
+
+  One way to solve the zero-testing problem is to simplify the given polynomial into ``standard'' form, as a sum of monomials, and test whether the result is zero (i.e., whether all the monomials cancel out).
+  However, this can be complicated to implement and potentially slow, depending on how we do polynomial multiplication.
+  For example, the na{\"i}ve multiplication algorithm takes $\Theta(n^2)$ time to multiply two polynomials each having~$n$ monomials.
+
+  In this problem, you will consider a simple and fast randomized ``spot checking'' algorithm for zero testing, which relies merely on \emph{evaluating} the polynomial.
+  Assume that we have a subroutine that evaluates a given polynomial at a given value; this can be implemented straightforwardly by substituting the given value for~$x$.
+
+  \begin{parts}
+    \part[5] Recall that the \emph{degree} of a nonzero polynomial is the largest exponent that appears in its nonzero monomials; the degree of the zero polynomial is undefined.
+    For example, the degree of $2x^3 + 8x^7 + 1x^6$ is~$7$, and the degree of $376$ is~$0$.
+
+    Also recall that every nonzero degree-$d$ polynomial $p(x)$ has at most~$d$ (complex) \emph{roots}, i.e., values $x^*$ such that $p(x^*)=0$.
+    So, this also holds when we restrict to integer roots.
+
+    All this suggests the following \emph{incomplete} spot-checking algorithm for zero testing:
+
+    \begin{minipage}{0.9\textwidth}
+      \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+          \Require a polynomial that is either nonzero and of degree~$d$, or is the zero polynomial
+          \Function{ZeroTest}{$p(x)$}
+          \State choose an integer $r \in \set{1,2,\ldots,\fillin[][1cm]}$ uniformly at random
+          \If{$p(r) = 0$} \fillin
+          \Else\ \fillin
+          \EndIf
+          \EndFunction
+        \end{algorithmic}
+      \end{algorithm}
+    \end{minipage}
+    
+    State, with justification, how to fill in the three blanks above so that:
+    \begin{itemize}
+    \item If $p(x)$ is the zero polynomial, then $\Call{ZeroTest}{p(x)}$ accepts with certainty (i.e., with probability~$1$).
+    \item If $p(x)$ is nonzero, then $\Pr[\Call{ZeroTest}{p(x)} \text{ rejects}] \geq 1/2$.
+    \end{itemize}
+    
+    \begin{solution} `$2d$', `accept', and `reject'.
+
+      A nonzero degree‑$d$ polynomial has at most $d$ roots, so choosing $r$ uniformly from ${1,\dots,2d}$ selects a root with probability at most $1/2$.
+      Thus, the test rejects a nonzero polynomial with probability at least $1/2$, while the zero polynomial is always accepted. 
+    \end{solution}
+    
+    \part[4] Accepting the zero polynomial with certainty is great, but rejecting a nonzero polynomial with probability only $1/2$ is not so great.
+    Describe, with brief justification, \emph{two different ways} of modifying the algorithm so that the probability of rejecting a nonzero polynomial improves to at least 99\% (and the zero polynomial is still accepted with certainty).
+      
+    \begin{solution} 
+      \begin{enumerate} 
+        \item Repeat the basic test independently $k$ times.
+      Reject if any evaluation is nonzero; otherwise accept.
+      For a nonzero polynomial the acceptance probability is at most $(1/2)^k\le0.01$,
+      so the rejection probability is at least $99\%$ for, say, $k=7$.
+      
+        \item Keep a single evaluation but choose $r$ uniformly from ${1,\dots,100d}$.
+      A nonzero degree‑$d$ polynomial then has acceptance probability of at most $d/(100d)=1\%$,
+      yielding rejection probability of at least $99\%$. 
+      \end{enumerate} 
+      Both modifications accept the zero polynomial with certainty. 
+    \end{solution}
+    
+  \end{parts}
+
+
+    \question \textbf{Pattern-matching fingerprinting.} 
+    
+    In computational linguistics, a common task is to determine whether a short syllable appears as a contiguous part of a word. This problem can be formalized as identifying whether a smaller string $Y$ is a substring of a larger string $X$.
+
+    Assume for simplicity that the strings are encoded in binary. Suppose $n$ is the length of $X$ and $m$ is the length of $Y$. A simple brute force solution is by comparing $Y$ with every possible substring of $x$, which takes $O(mn)$ time. In this problem, you will explore a randomized algorithm that has a faster running time, with a slight sacrifice in accuracy. 
+    
+    Consider the following randomized algorithm:
+    
+        \begin{minipage}{\linewidth}
+      \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+          \Function{PatternMatch}{$X,Y,k$}
+                \State{Pick a random prime $p$ in the range $\set{1, \ldots, k}$.}
+                \For {$j=1, \ldots, n-m+1$}
+                    \State $X_j \gets x_j \cdots x_{j+m-1}$ \Comment{Substring of length $m$ starting at $x_j$}
+                    \If{$X_j \bmod p = Y \bmod p$}
+                        \State{\textbf{accept}}
+                    \EndIf
+                \EndFor
+                \State{\textbf{reject}}
+          \EndFunction
+        \end{algorithmic}
+      \end{algorithm}
+    \end{minipage}
+
+    \begin{parts}
+        \part [2] Briefly explain why if $Y$ is a substring of $X$, the algorithm will always accept. 
+
+        \begin{solution}
+        If $Y$ is a substring of $X$, some $j$ satisfies $X_j = Y$, which implies that $X_j \bmod p = Y \bmod p$ for every prime $p$. The algorithm reaches line 5 and accepts.
+        \end{solution}
+
+        \pagebreak
+
+        \part [3] Suppose $Y$ is not a substring of $X$. Derive an upper bound on the probability of a false positive in a single iteration of the algorithm. You may use the Prime Number Theorem which says the number of primes less than $k$ is $\pi(k)$, where $\pi(k) \approx k/ \ln k$. 
+
+        \begin{solution}
+        Let $D_j = X_j - Y \neq 0$ for each $j$. A false positive arises when $p \mid D_j$ for some $j$. Each $D_j < 2^{m}$ contains at most $m$ distinct prime divisors, so at most $m$ primes in $\{1,\dots,k\}$ divide a fixed $D_j$. The number of primes in that range is $\pi(k) \ge k / \ln k$. Applying the union bound over the $n-m+1$ substrings gives
+        \[
+        \Pr[\text{false positive}]
+        \le\frac{(n-m+1)m}{\pi(k)}
+        \le\frac{(n-m+1)m\ln k}{k}.
+        \]
+        \end{solution}
+
+        \part [3] In this part, you'll prove a result you need for the next part.
+        
+        Let $h_{j} = X_{j} \bmod p$. Give a formula for $h_j$ in terms of $x_{j-1}$ (the leftmost bit in $X_{j-1}$), $x_{j+m-1}$ (the bit right after $X_{j-1}$), and $h_{j-1}$. \label{recurse-hase}
+
+        \begin{solution}
+        Let $\beta = 2^{m-1} \bmod p$, then:
+        \[
+        h_j = \left((h_{j-1} - x_{j-1}\beta)\cdot 2 + x_{j+m-1}\right)\bmod p .
+        \]
+        \end{solution}
+
+        \pagebreak
+
+        \part [5] It turns out that the current implementation of \textsc{PatternMatch} still runs in $O(mn)$ time. 
+
+        Using the result in \cref{recurse-hase}, modify the algorithm so that it uses at most $O(n \log k)$ numerical operations (addition, subtraction, multiplication, modulo operation, \emph{bit} comparison\footnote{This means comparing two bit strings of length $\ell$ uses $O(\ell)$ numerical operations.}). Justify your answer.
+
+        \hint{You may want to precompute some values and reuse them in the for-loop.}
+
+
+        \begin{solution}
+        \begin{algorithm}[H]
+        \begin{algorithmic}[1]
+        \Function{PatternMatchFast}{$X,Y,k$}
+          \State pick a random prime $p\in\{1,\dots,k\}$
+          \State $\beta\gets 2^{m-1}\bmod p$
+          \State $h_Y\gets Y\bmod p$
+          \State $h\gets X_1\bmod p$
+          \For{$j=1$ \textbf{to} $n-m+1$}
+            \If{$h=h_Y$}
+                \If{$X_j=Y$} \State\textbf{accept}\EndIf
+            \EndIf
+            \If{$j<n-m+1$}
+                \State $h\gets\big((h - x_{j}\beta)\cdot 2 + x_{j+m}\big)\bmod p$
+            \EndIf
+          \EndFor
+          \State\textbf{reject}
+        \EndFunction
+        \end{algorithmic}
+        \end{algorithm}
+        
+        Lines 2-5 use $O(m+\log k)$ operations.  
+        The loop executes $n-m+1=O(n)$ iterations, each performing $O(1)$ modular operations.  Each potential match triggers at most one $O(m)$ bit comparison, whose expected count is bounded by the probability in part\,(b); for $k=\Theta(nm\ln k)$ these comparisons contribute $O(1)$ expected cost per iteration.  Hence the total number of numerical operations is $O(n\log k)$.
+        \end{solution}
+
+    \end{parts}
+    \pagebreak
+   \question \textbf{Diffie--Hellman.}
+
+  Vikram and Eric are writing the solutions to Homework~11.
+  Vikram has a draft of the solutions on his laptop and wants to send them confidentially to Eric.
+  Since they have not had a private moment to choose a shared secret key together, they decide to use the Diffie-Hellman protocol to establish one over the public network.
+  
+  \begin{parts}
+    \part[6] 
+    Suppose they use the Diffie--Hellman protocol with the small prime $p=29$ and generator $g=2$ for $\Z_p^*$.
+    Vikram chooses secret exponent $a=12$, and Eric chooses $b=22$.
+    Derive the values that they send each other and the secret key that each one computes, to conclude that they both compute the same value.
+
+    You may use a calculator for basic arithmetic (multiplication and division), but beyond that you should use the efficient algorithms that a computer would employ.
+    Show your work (repeated squaring etc.), but you can omit the details of modular reductions.
+    Keep numbers small by reducing modulo~$p$ where appropriate, and use negative number where they help.
+                
+    \begin{solution}
+    Public values:
+    \begin{align*}
+    x&=g^a\bmod p=2^{12}\bmod29
+    =2^8\cdot2^4\bmod29
+    =(24)(16)\bmod29
+    =7, \\
+    y&=g^b\bmod p=2^{22}\bmod29
+    =2^{16}\cdot2^{4}\cdot2^{2}\bmod29
+    =(25)(16)(4)\bmod29
+    =5.
+    \end{align*}
+    Secret key:
+    \begin{multline*}
+      K=y^{a}\bmod p=5^{12}\bmod29
+      =5^{8}\cdot5^{4}\bmod29
+      =(24)(16)\bmod29 \\
+      =7
+      =7^{22}\bmod29=x^{b}\bmod p.
+    \end{multline*}
+    \end{solution}
+    \pagebreak
+    
+    \part[6] After realizing that the parameters from the previous part are much too small (since they are breakable by hand), Vikram and Eric decide to use the Diffie--Hellman protocol with a different, huge prime~$p$ and generator~$g$ of $\Z_p^*$.
+    As specified by the protocol, Vikram chooses secret $a \in \Z_p^*$ uniformly at random, and sends $x = g^a \bmod p$ to Eric.
+    Similarly, Eric chooses secret $b \in \Z_p^*$ uniformly at random, and sends $y = g^b \bmod p$ to Vikram.
+
+    Unbeknownst to them, Lambda in the middle of their network, and is able to intercept \emph{and undetectably replace} what they send over the network with other values of his choice.
+    (In class we considered only an \emph{eavesdropper} Eve who can merely read all the network traffic; this Lambda is more powerful.)
+    
+    Specifically, Lambda chooses a secret $c \in \Z_p^*$ himself, and sends $z = g^c \mod p$ to both Vikram and Eric in place of their messages to each other.
+    That is, Vikram thinks that Lambda's message came from Eric, and Eric thinks that Lambda's message came from Vikram.
+
+    Give an expression for the key that Vikram~$K_V$ computes, and the key~$K_E$ that Eric computes, in terms of the secret exponents $a,b,c$ and the public values $p,g$.
+
+    \begin{solution}
+    \[
+    K_V=(g^{c})^{a}\bmod p=g^{ac}\bmod p,\qquad
+    K_E=(g^{c})^{b}\bmod p=g^{bc}\bmod p.
+    \]
+    \end{solution}
+    
+        
+    \part [6] Vikram and Eric work on the homework solutions by encrypting their messages using the keys they computed in the previous part (which they believe are the same key).
+      Lambda knows the encryption scheme that Vikram and Eric are using.
+      Describe how Lambda can decrypt all of Vikram and Eric's communications without being detected, i.e., so that they believe they are communicating confidentially, and when they decrypt the ciphertexts they receive, they get exactly the messages that were intended for them.
+
+      A valid solution should show the following:
+      \begin{itemize}
+      \item how Lambda can successfully decrypt all of the ciphertexts that Vikram and Eric send to each other;
+      \item how Lambda can avoid detection by replacing the ciphertexts that Vikram and Eric send with ones that will yield the intended messages when they decrypt (using what they believe to be their shared key).
+      \end{itemize}
+
+      \begin{solution}
+      \begin{itemize}
+      \item Intercept \(x=g^{a}\) and \(y=g^{b}\); send \(z=g^{c}\) to both parties.
+      \item Compute \(K_V=g^{ac}\bmod p\) and \(K_E=g^{bc}\bmod p\).
+      \item Upon receiving a ciphertext from Vikram, decrypt with \(K_V\); re‑encrypt the plaintext with \(K_E\) and forward to Eric.
+      \item Upon receiving a ciphertext from Eric, decrypt with \(K_E\); re‑encrypt the plaintext with \(K_V\) and forward to Vikram.
+      \end{itemize}
+      All messages decrypt to the intended plaintexts, so neither Vikram nor Eric detects the interception.
+      \end{solution}
+  \end{parts}
+
+
+\end{questions}
+
+\end{document}

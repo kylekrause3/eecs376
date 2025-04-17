@@ -1,0 +1,91 @@
+This is for a rigorous computer science foundations class. For the following latex code, find the solution and give the solution in a copy-pastable latex format. I am looking for the clear, concise, and correct solution to this foundational computer science theory problem, priotitizing simplistic explanation and logical thoroughness. Do not include any explanations, your answer should look like a realistic response from a perfect student. I do not want any sorts of titles or re-stating of the problem, I just want the raw solution. Try not to use pronouns like "I" or "we", opting to replace language like "we disprove" to just "disprove" and "we construct" to "construct". Make sure your response is in its own black box copy-pastable latex environment box.
+
+
+!!!!!!!!Here is a previous solution to another problem from a different homework. Use this as a style guide for your response. 
+\begin{solution} 
+\(\lang{I'M-FINITE}\) is decidable. Consider a decider for \(\lang{I'M-FINITE}\), which operates as follows: 
+\begin{enumerate}
+    \item On input \(w\), compare \(w\) with each string \(\ell_1, \ell_2, \ldots, \ell_n\). 
+    \item If \(w=\ell_i\) for some \(i\), accept; otherwise, reject. 
+\end{enumerate}
+Since there are only finitely many strings to compare, the machine halts on every input. Thus, \(\lang{I'M-FINITE}\) is decidable.
+\end{solution}
+
+\begin{solution} 
+Consider a Turing machine \( M^{\overline{L}} \) that, on input \( x \), queries the oracle for \(\overline{L}\) on \( x \):
+\[
+\text{if } x \in \overline{L} \text{ then reject; otherwise, accept.}
+\]
+Since, for this machine, \( x \in L \) if and only if \( x \notin \overline{L} \), \( L \lT \overline{L} \).
+\end{solution}
+
+\begin{solution}
+  Disprove; define
+  \[
+  L \;=\; \{\,\varphi \mid \varphi\in \text{3SAT}\}\;\cup\;\{\,\langle M\rangle \mid M\text{ halts on the empty input}\}.
+  \]
+  \textbf{1. Reduction:} Given an instance \(\varphi\) of 3SAT, let \(f(\varphi)=\varphi\).\\
+  \textbf{2. Polynomial Time:} This is the identity function; polynomial time.\\
+  \textbf{3. Correctness:} 
+  \begin{itemize}
+  \item (\(\Rightarrow\)) If \(\varphi\) is satisfiable, then \(\varphi \in L\), so \(f(\varphi)\in L\).
+  \item (\(\Leftarrow\)) If \(f(\varphi)=\varphi\in L\), then \(\varphi\) must be a satisfiable 3SAT instance. 
+  \end{itemize}
+  Hence 3SAT \(\leq_p\) \(L\), so \(L\) is \NP-hard. However, deciding \(L\) requires solving the Halting Problem, so \(L\) is not decidable. Therefore, not all \NP-hard languages are decidable.
+\end{solution}
+!!!!!!!!ie. do not include any explanations, just the solution, in a similar format to the above, without any crazy latex techniques.
+
+
+
+!!!!!!!!Here is the question for you to provide latex output solution for: 
+
+\question \textbf{Diffie--Hellman.}
+
+Vikram and Eric are writing the solutions to Homework~11.
+Vikram has a draft of the solutions on his laptop and wants to send them confidentially to Eric.
+Since they have not had a private moment to choose a shared secret key together, they decide to use the Diffie-Hellman protocol to establish one over the public network.
+
+\begin{parts}
+\part[6] 
+Suppose they use the Diffie--Hellman protocol with the small prime $p=29$ and generator $g=2$ for $\Z_p^*$.
+Vikram chooses secret exponent $a=12$, and Eric chooses $b=22$.
+Derive the values that they send each other and the secret key that each one computes, to conclude that they both compute the same value.
+
+You may use a calculator for basic arithmetic (multiplication and division), but beyond that you should use the efficient algorithms that a computer would employ.
+Show your work (repeated squaring etc.), but you can omit the details of modular reductions.
+Keep numbers small by reducing modulo~$p$ where appropriate, and use negative number where they help.
+			
+\begin{solution} \end{solution}
+
+\part[6] After realizing that the parameters from the previous part are much too small (since they are breakable by hand), Vikram and Eric decide to use the Diffie--Hellman protocol with a different, huge prime~$p$ and generator~$g$ of $\Z_p^*$.
+As specified by the protocol, Vikram chooses secret $a \in \Z_p^*$ uniformly at random, and sends $x = g^a \bmod p$ to Eric.
+Similarly, Eric chooses secret $b \in \Z_p^*$ uniformly at random, and sends $y = g^b \bmod p$ to Vikram.
+
+Unbeknownst to them, Lambda in the middle of their network, and is able to intercept \emph{and undetectably replace} what they send over the network with other values of his choice.
+(In class we considered only an \emph{eavesdropper} Eve who can merely read all the network traffic; this Lambda is more powerful.)
+
+Specifically, Lambda chooses a secret $c \in \Z_p^*$ himself, and sends $z = g^c \mod p$ to both Vikram and Eric in place of their messages to each other.
+That is, Vikram thinks that Lambda's message came from Eric, and Eric thinks that Lambda's message came from Vikram.
+
+Give an expression for the key that Vikram~$K_V$ computes, and the key~$K_E$ that Eric computes, in terms of the secret exponents $a,b,c$ and the public values $p,g$.
+
+	\begin{solution} \end{solution}
+
+	
+\part [6] Vikram and Eric work on the homework solutions by encrypting their messages using the keys they computed in the previous part (which they believe are the same key).
+	Lambda knows the encryption scheme that Vikram and Eric are using.
+	Describe how Lambda can decrypt all of Vikram and Eric's communications without being detected, i.e., so that they believe they are communicating confidentially, and when they decrypt the ciphertexts they receive, they get exactly the messages that were intended for them.
+
+	A valid solution should show the following:
+	\begin{itemize}
+	\item how Lambda can successfully decrypt all of the ciphertexts that Vikram and Eric send to each other;
+	\item how Lambda can avoid detection by replacing the ciphertexts that Vikram and Eric send with ones that will yield the intended messages when they decrypt (using what they believe to be their shared key).
+	\end{itemize}
+
+	\begin{solution} \end{solution}
+\end{parts}
+
+
+
+
+!!!!!!!!I need the verbaitm raw latex output for this question. Your response should look like raw text, with no latex formatting on the webpage.
